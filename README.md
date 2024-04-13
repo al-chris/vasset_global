@@ -1,0 +1,2 @@
+# vasset_global
+ vasset
