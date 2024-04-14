@@ -61,8 +61,7 @@ class AuthController:
             
             if User.query.filter_by(email=email).first():
                 return error_response('Email already taken', 409)
-            
-            
+                        
             # Check if any field is empty
             if not all([firstname, lastname, username, password]):
                 return {"error": "A required field is not provided."}, 400
@@ -77,8 +76,7 @@ class AuthController:
                 new_user.roles.append(role)
             
             db.session.add_all([new_user, new_user_profile, new_user_address])
-            db.session.commit()
-            
+            db.session.commit()            
             
             user_data = new_user.to_dict()
 
@@ -153,11 +151,10 @@ class AuthController:
             user = User.query.filter_by(email=email).first()
             if user:
                 user.email_verified = True
+                db.session.commit()
                 return success_response('User registered successfully', 201, {'user_data': user.to_dict()})
             
-            
-            db.session.commit()
-            
+                                    
             user_data = user.to_dict()
             extra_data = {'user_data': user_data}
             
@@ -221,6 +218,7 @@ class AuthController:
             expires = timedelta(minutes=30)
             signup_token = create_access_token(identity=user_info, expires_delta=expires, additional_claims={'type': 'signup'})
             extra_data = {'signup_token': signup_token}
+            
         except ExpiredSignatureError as e:
             error = True
             msg = f"The Signup token has expired. Please try signing up again."
