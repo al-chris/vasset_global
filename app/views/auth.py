@@ -12,7 +12,7 @@ import logging
 from datetime import timedelta
 from flask import request, make_response
 from sqlalchemy.exc import ( IntegrityError, DataError, DatabaseError, InvalidRequestError, )
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import UnsupportedMediaType
 from flask_jwt_extended import create_access_token, decode_token, get_jwt_identity
 from flask_jwt_extended.exceptions import JWTDecodeError

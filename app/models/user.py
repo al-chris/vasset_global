@@ -37,7 +37,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
-    password_hash = db.Column(db.String(128))
+    _password = db.Column(db.String(128))
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.UTC))
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.UTC), onupdate=datetime.now(timezone.UTC))
 
@@ -53,13 +53,13 @@ class User(db.Model):
     
     @password.setter
     def password(self, password):
-        self.password_hash = generate_password_hash(password)
+        self._password = generate_password_hash(password)
     
     def verify_password(self, password):
         '''
         #This returns True if the password is same as hashed password in the database.
         '''
-        return check_password_hash(self.password_hash, password)
+        return check_password_hash(self._password, password)
 
     def __repr__(self):
         return f'<ID: {self.id}, username: {self.username}, email: {self.email}>'
