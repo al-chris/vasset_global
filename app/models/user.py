@@ -5,7 +5,7 @@ from ..extensions import db
 from config import Config
 from enum import Enum
 
-from app.models import Media
+from app.models import Media, Role, RoleNames
 
 class TempUser(db.Model):
     '''
@@ -45,6 +45,8 @@ class User(db.Model):
     profile = db.relationship('Profile', back_populates="vasset_user", uselist=False, cascade="all, delete-orphan")
     address = db.relationship('Address', back_populates="vasset_user", uselist=False, cascade="all, delete-orphan")
     identification = db.relationship('Identification', back_populates="vasset_user", uselist=False, cascade="all, delete-orphan")
+    roles = db.relationship('Role', secondary='user_roles', backref=db.backref('users', lazy='dynamic'), cascade="all, delete-orphan", single_parent=True)
+    # user_settings = db.relationship('UserSettings', back_populates='vasset_user', uselist=False, cascade='all, delete-orphan')
 
 
     @property
@@ -60,6 +62,11 @@ class User(db.Model):
         #This returns True if the password is same as hashed password in the database.
         '''
         return check_password_hash(self._password, password)
+    
+    @property
+    def role_names(self) -> list[str]:
+        """Returns a list of role names for the user."""
+        return [str(role.name.value) for role in self.roles]
 
     def __repr__(self):
         return f'<ID: {self.id}, username: {self.username}, email: {self.email}>'
@@ -79,12 +86,37 @@ class User(db.Model):
         db.session.commit()
 
     def to_dict(self) -> dict:
+        
+        address_info = {}
+        if self.address:
+            address_info.update({
+                'country': self.address.country,
+                'state': self.address.state,
+                'city': self.address.city,
+                'address': self.address.address,
+                'currency_code': self.address.currency_code,
+                'postal_code': self.address.postal_code
+            })
+        
+        profile_data = {}
+        if self.profile:
+            profile_data.update({
+                'firstname': self.profile.firstname,
+                'lastname': self.profile.lastname,
+                'gender': self.profile.gender,
+                'phone': self.profile.phone,
+                'birthday': self.profile.birthday,
+                'profile_picture': self.profile.profile_pic,
+            })
+
         return {
             'id': self.id,
             'username': self.username,
             'email': self.email,
             'created_at': self.created_at,
-            'updated_at': self.updated_at
+            'updated_at': self.updated_at,
+            **address_info,
+            **profile_data
         }
     
 
@@ -171,7 +203,6 @@ class Profile(db.Model):
             'phone': self.phone,
             'birthday': self.birthday,
             'profile_picture': self.profile_pic,
-            'referral_link': f'{self.referral_link}',
         }
 
 
