@@ -33,6 +33,26 @@ class AuthController:
         try:
             data = request.get_json()
             email = data.get('email')
+            username = data.get('username')
+            password = data.get('password')
+            country = data.get('country')
+            address = data.get('address')
+            state = data.get('state')
+            city = data.get('city')
+            currency_code = data.get('currency_code')
+            postal_code = data.get('postal_code')
+            firstname = data.get('firstname')
+            lastname = data.get('lastname')
+            gender = data.get('gender')
+            phone = data.get('phone')
+            birthday = data.get('birthday')
+            profile_picture_id = data.get('profile_picture_id')
+            id_type = data.get('id_type')
+            id_issue_date = data.get('id_issue_date')
+            id_expiration_date = data.get('id_expiration_date')
+            id_picture = data.get('id_picture')
+            bvn = data.get('bvn')
+
             pass
 
         except Exception as e:
