@@ -22,7 +22,7 @@ import pyotp
 from app.extensions import db
 from app.models import User, TempUser, Role, RoleNames, Address, Identification, IdentificationType, Profile, OneTimeToken
 from app.utils.helpers.auth_helpers import generate_six_digit_code, save_pwd_reset_token, send_2fa_code
-
+from app.utils.response import error_response, success_response
 
 
 
@@ -32,26 +32,32 @@ class AuthController:
     def signup():
         try:
             data = request.get_json()
-            email = data.get('email')
-            username = data.get('username')
-            password = data.get('password')
-            country = data.get('country')
-            address = data.get('address')
-            state = data.get('state')
-            city = data.get('city')
-            currency_code = data.get('currency_code')
-            postal_code = data.get('postal_code')
-            firstname = data.get('firstname')
-            lastname = data.get('lastname')
-            gender = data.get('gender')
-            phone = data.get('phone')
-            birthday = data.get('birthday')
-            profile_picture_id = data.get('profile_picture_id')
-            id_type = data.get('id_type')
-            id_issue_date = data.get('id_issue_date')
-            id_expiration_date = data.get('id_expiration_date')
-            id_picture = data.get('id_picture')
-            bvn = data.get('bvn')
+            email = data.get('email', '')
+            username = data.get('username', '')
+            password = data.get('password', '')
+            country = data.get('country', '')
+            address = data.get('address', '')
+            state = data.get('state', '')
+            city = data.get('city', '')
+            currency_code = data.get('currency_code', '')
+            postal_code = data.get('postal_code', '')
+            firstname = data.get('firstname', '')
+            lastname = data.get('lastname', '')
+            gender = data.get('gender', '')
+            phone = data.get('phone', '')
+            birthday = data.get('birthday', '')
+            profile_picture_id = data.get('profile_picture_id', '')
+            id_type = data.get('id_type', '')
+            id_issue_date = data.get('id_issue_date', '')
+            id_expiration_date = data.get('id_expiration_date', '')
+            id_picture = data.get('id_picture', '')
+            bvn = data.get('bvn', '')
+
+            if User.query.filter_by(username=username).first():
+                return error_response('Username already taken', 409)
+            
+            if User.query.filter_by(email=email).first():
+                return error_response('Email already taken', 409)
 
             pass
 
