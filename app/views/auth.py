@@ -20,4 +20,20 @@ from jwt import ExpiredSignatureError, DecodeError
 import pyotp
 
 from app.extensions import db
-from app.models import User, TempUser
+from app.models import User, TempUser, Role, RoleNames, Address, Identification, IdentificationType, Profile, OneTimeToken
+from app.utils.helpers.auth_helpers import generate_six_digit_code, save_pwd_reset_token, send_2fa_code
+
+
+
+
+class AuthController:
+
+    @staticmethod
+    def signup():
+        try:
+            data = request.get_json()
+            email = data.get('email')
+            pass
+
+        except Exception as e:
+            pass
