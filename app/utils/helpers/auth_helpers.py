@@ -23,6 +23,13 @@ from .mail_helpers import send_code_to_email
 from app.models import User, TempUser, OneTimeToken
 
 
+class TwoFactorMethod(Enum):
+    PHONE = 'phone'
+    EMAIL = 'email'
+    GOOGLE_AUTH_APP = 'google auth app'
+    NONE = None
+
+
 class EmailType(Enum):
     VERIFY_EMAIL = 'verify_email'
     PWD_RESET = 'pwd_reset'
@@ -39,7 +46,6 @@ def generate_six_digit_code():
     
     console_log('SIX DIGIT CODE', six_digit_code)
     return six_digit_code
-
 
 
 def send_2fa_code(user_obj, two_factor_method, six_digit_code):

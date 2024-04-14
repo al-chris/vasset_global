@@ -96,7 +96,6 @@ class User(db.Model):
                 'state': self.address.state,
                 'city': self.address.city,
                 'address': self.address.address,
-                'currency_code': self.address.currency_code,
                 'postal_code': self.address.postal_code
             })
         
@@ -109,6 +108,7 @@ class User(db.Model):
                 'phone': self.profile.phone,
                 'birthday': self.profile.birthday,
                 'profile_picture': self.profile.profile_pic,
+                'currency_code': self.address.currency_code
             })
 
         return {
@@ -169,16 +169,26 @@ class Profile(db.Model):
     phone = db.Column(db.String(120), nullable=True)
     birthday = db.Column(db.Date, nullable=True)
     profile_picture_id = db.Column(db.Integer(), db.ForeignKey('media.id'), nullable=True)
+    currency_code = db.Column(db.String(50), nullable=True)
+    _bvn = db.Column(db.Integer(), unique=True)
     
-    vasset_user_id = db.Column(db.Integer, db.ForeignKey('trendit3_user.id', ondelete='CASCADE'), nullable=False,)
+    vasset_user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id', ondelete='CASCADE'), nullable=False,)
     vasset_user = db.relationship('User', back_populates="profile")
     
     def __repr__(self):
         return f'<profile ID: {self.id}, name: {self.firstname}>'
     
     @property
-    def referral_link(self):
-        return f'{Config.DOMAIN_NAME}/signup/{self.trendit3_user.username}'
+    def bvn(self):
+        return self._bvn
+    
+    @bvn.setter
+    def bvn(self, value):
+        self._bvn = int(value)
+    
+    # @property
+    # def referral_link(self):
+    #     return f'{Config.DOMAIN_NAME}/signup/{self.trendit3_user.username}'
     
     def update(self, **kwargs):
         for key, value in kwargs.items():
@@ -204,7 +214,7 @@ class Profile(db.Model):
             'gender': self.gender,
             'phone': self.phone,
             'birthday': self.birthday,
-            'profile_picture': self.profile_pic,
+            'profile_picture': self.profile_pic
         }
 
 
@@ -216,7 +226,6 @@ class Address(db.Model):
     address = db.Column(db.String(150), nullable=True)
     state = db.Column(db.String(50), nullable=True)
     city = db.Column(db.String(100), nullable=True)
-    currency_code = db.Column(db.String(50), nullable=True)
     postal_code = db.Column(db.String(6), nullable=True)
     
     vasset_user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id', ondelete='CASCADE'), nullable=False,)
@@ -253,10 +262,9 @@ class Identification(db.Model):
     
     id = db.Column(db.Integer(), primary_key=True)
     type = db.Column(db.Enum(IdentificationType), unique=True, nullable=False)
-    issue_date = db.Column(db.DateTime, nullable=False)
-    expiration_date = db.Column(db.DateTime, nullable=False)
-    picture = db.Column(db.Integer(), db.ForeignKey('media.id'), nullable=False)
-    bvn = db.Column(db.Integer(), unique=True)
+    issue_date = db.Column(db.Date, nullable=False)
+    expiration_date = db.Column(db.Date, nullable=False)
+    picture_id = db.Column(db.Integer(), db.ForeignKey('media.id'), nullable=False)
     
     vasset_user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id', ondelete='CASCADE'), nullable=False,)
     vasset_user = db.relationship('User', back_populates="identification")
@@ -265,12 +273,26 @@ class Identification(db.Model):
         return f'<address ID: {self.id}, country: {self.country}, LGA: {self.local_government}, person ID: {self.vasset_user_id}>'
     
     @property
-    def bvn(self):
-        return self.bvn
-    
-    @bvn.setter
-    def bvn(self, value):
-        self.bvn = int(value)
+    def id_image(self):
+        if self.picture_id:
+            theImage = Media.query.get(self.picture_id)
+            if theImage:
+                return theImage.get_path()
+            else:
+                return ''
+        else:
+            return ''
+        
+    @staticmethod
+    def get_id_type_from_string(id: str):
+        id_map = {
+            'passport': IdentificationType.PASSPORT,
+            'nin': IdentificationType.NIN,
+            'drivers licence': IdentificationType.DRIVERS_LICENCE,
+            'national id': IdentificationType.NATIONAL_ID
+        }
+
+        return id_map.get(id.lower())
 
     def update(self, **kwargs):
         for key, value in kwargs.items():
