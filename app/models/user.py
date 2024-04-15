@@ -309,3 +309,34 @@ class Identification(db.Model):
             'bvn': self.bvn,
             'user_id': self.vasset_user_id
         }
+
+
+class NextOfKin(db.Model):
+    id = db.Column(db.Integer(), unique=True, primary_key=True)
+    relationship = db.Column(db.String(50), nullable=False)
+    firstname = db.Column(db.String(200), nullable=True)
+    lastname = db.Column(db.String(200), nullable=True)
+    gender = db.Column(db.String(50), nullable=True)
+    phone = db.Column(db.String(120), nullable=True)
+    email = db.Column(db.String(50), unique=True)
+    address = db.Column(db.String(150), nullable=True)
+    
+    def __repr__(self):
+        return f'<D: {self.id}, name: {self.firstname}, email: {self.email}>'
+    
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        db.session.commit()
+        
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'relationship': self.relationship,
+            'firstname': self.firstname,
+            'lastname': self.lastname,
+            'gender': self.gender,
+            'phone': self.phone,
+            'email': self.email,
+            'address': self.address
+        }
