@@ -9,6 +9,6 @@ It includes models for User Transaction, Role, etc. Each model corresponds to a 
 '''
 
 from .role import Role, RoleNames
-from .user import User, TempUser, Address, Profile, Identification, IdentificationType, OneTimeToken
+from .user import User, TempUser, Address, Profile, Identification, IdentificationType, OneTimeToken, NextOfKin
 from .media import Media
 from .settings import TwoFactorMethod, SecuritySetting, UserSettings

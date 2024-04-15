@@ -21,7 +21,7 @@ from jwt import ExpiredSignatureError, DecodeError
 import pyotp
 
 from app.extensions import db
-from app.models import User, TempUser, Role, RoleNames, Address, Identification, IdentificationType, Profile, OneTimeToken
+from app.models import User, TempUser, Role, RoleNames, Address, Identification, IdentificationType, Profile, OneTimeToken, NextOfKin
 from app.utils.helpers.auth_helpers import generate_six_digit_code, save_pwd_reset_token, send_2fa_code
 from app.utils.helpers.email_helpers import send_code_to_email, send_other_emails
 from app.utils.helpers.basic_helpers import log_exception, console_log
