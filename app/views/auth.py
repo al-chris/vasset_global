@@ -57,6 +57,13 @@ class AuthController:
             id_expiration_date = data.get('id_expiration_date', '')
             id_picture = data.get('id_picture', '')
             bvn = data.get('bvn', '')
+            next_of_kin_firstname = data.get('next_of_kin_name', '')
+            next_of_kin_lastname = data.get('next_of_kin_lastname', '')
+            next_of_kin_relationship = data.get('next_of_kin_relationship', '')
+            next_of_kin_gender = data.get('next_of_kin_gender', '')
+            next_of_kin_phone = data.get('next_of_kin_phone', '')
+            next_of_kin_email = data.get('next_of_kin_email', '')
+            next_of_kin_address = data.get('next_of_kin_address', '')
 
             if User.query.filter_by(username=username).first():
                 return error_response('Username already taken', 409)
@@ -114,7 +121,9 @@ class AuthController:
             if role:
                 new_user.roles.append(role)
             
-            db.session.add_all([new_user, new_user_profile, new_user_address, new_user_identification])
+            new_user_next_of_kin = NextOfKin(relationship=next_of_kin_relationship, firstname=next_of_kin_firstname, lastname=next_of_kin_lastname, phone=next_of_kin_phone, email=next_of_kin_email, address=next_of_kin_address, gender=next_of_kin_gender)
+
+            db.session.add_all([new_user, new_user_profile, new_user_address, new_user_identification, new_user_next_of_kin])
             db.session.commit()            
             
             user_data = new_user.to_dict()

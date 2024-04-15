@@ -48,6 +48,7 @@ class User(db.Model):
     address = db.relationship('Address', back_populates="vasset_user", uselist=False, cascade="all, delete-orphan")
     identification = db.relationship('Identification', back_populates="vasset_user", uselist=False, cascade="all, delete-orphan")
     roles = db.relationship('Role', secondary='user_roles', backref=db.backref('users', lazy='dynamic'), cascade="all, delete-orphan", single_parent=True)
+    nextofkin = db.relationship('NextOfKin', back_populates="vasset_user", uselist=False, cascade="all, delete-orphan")
     # user_settings = db.relationship('UserSettings', back_populates='vasset_user', uselist=False, cascade='all, delete-orphan')
 
 
@@ -320,6 +321,9 @@ class NextOfKin(db.Model):
     phone = db.Column(db.String(120), nullable=True)
     email = db.Column(db.String(50), unique=True)
     address = db.Column(db.String(150), nullable=True)
+    
+    vasset_user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id', ondelete='CASCADE'), nullable=False,)
+    vasset_user = db.relationship('User', back_populates="nextofkin")
     
     def __repr__(self):
         return f'<D: {self.id}, name: {self.firstname}, email: {self.email}>'
