@@ -14,7 +14,7 @@ from slugify import slugify
 from flask_mail import Message
 
 from ...extensions import db
-from ...models import Item
+# from ...models import Item
 from ...exceptions import UniqueSlugError
 from config import Config
 
@@ -122,7 +122,7 @@ def get_object_by_slug(model: object, slug: str):
     """
     return model.query.filter_by(slug=slug).first()
 
-def generate_slug(name: str, type: str, existing_obj=None) -> str:
+# def generate_slug(name: str, type: str, existing_obj=None) -> str:
     """
     Generates a unique slug for a given name based on the type of object.
 
