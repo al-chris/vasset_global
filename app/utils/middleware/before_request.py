@@ -2,7 +2,7 @@ import requests, socket
 from flask import Flask, request, abort, current_app
 
 from ..helpers import check_emerge, console_log
-from ..helpers import error_response
+from ...utils import error_response
 
 
 def json_check():
