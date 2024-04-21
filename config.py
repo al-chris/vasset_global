@@ -18,7 +18,7 @@ class Config:
     # other app configurations
     ENV = os.environ.get('ENV') or 'development'
     SECRET_KEY = os.environ.get('SECRET_KEY') or os.urandom(32)
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://postgres:zeddy@localhost:5432/trendit3'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://vasset_user:EpXJqNOltaTSKKX50BcBI0eO55xoNtb3@dpg-cockceq1hbls73cshk1g-a/vasset'
     
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = (ENV == 'development')  # Enable debug mode only in development
