@@ -41,8 +41,8 @@ class User(db.Model):
     _password = db.Column(db.String(128))
     email_verified = db.Column(db.Boolean, default=False)
     phone_verified = db.Column(db.Boolean, default=False)
-    created_at = db.Column(db.DateTime, default=datetime.now(timezone.UTC))
-    updated_at = db.Column(db.DateTime, default=datetime.now(timezone.UTC), onupdate=datetime.now(timezone.UTC))
+    created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     # Relationships
     profile = db.relationship('Profile', back_populates="vasset_user", uselist=False, cascade="all, delete-orphan")

@@ -10,9 +10,9 @@ These functions assist with tasks such as:
 @link: https://github.com/al-chris
 @package: VASSET
 '''
-from app.extensions import db
-from app.models.user import User, Address, Profile
-from app.utils.helpers.basic_helpers import generate_random_string
+from ...extensions import db
+from ...models.user import User, Address, Profile
+from ...utils.helpers.basic_helpers import generate_random_string
 
 
 def get_user_info(userId):
