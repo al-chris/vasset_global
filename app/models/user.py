@@ -5,7 +5,8 @@ from ..extensions import db
 from config import Config
 from enum import Enum
 
-from ..models import Media, Role, RoleNames
+from ..models import Media
+from ..models.role import Role, RoleNames
 
 class TempUser(db.Model):
     '''
