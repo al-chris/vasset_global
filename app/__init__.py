@@ -4,20 +4,20 @@ from flask_cors import CORS
 from celery import Celery
 from flask_migrate import Migrate
 from flask_moment import Moment
+from .utils.middleware import set_access_control_allows, check_emerge, json_check, ping_url
+from config import Config, configure_logging, config_by_name
 
 
 from .extensions import db, mail, limiter
 
 # Initialize Flask app
-def create_app():
+def create_app(config_name=Config.ENV):
     app = Flask(__name__)
+    app.config.from_object(config_by_name[config_name])
 
     # Configure JWT
-    app.config['JWT_SECRET_KEY'] = 'your-secret-key'
+    # app.config['JWT_SECRET_KEY'] = 'your-secret-key'
     jwt = JWTManager(app)
-
-    # Enable CORS
-    CORS(app)
 
     # Initialize Celery
     celery = Celery(app.name, broker='redis://localhost:6379/0')
@@ -34,5 +34,19 @@ def create_app():
     moment = Moment(app)
 
     # Add your app routes and other configurations here
+    
+    # Set up CORS. Allow '*' for origins.
+    cors = CORS(app, resources={r"/*": {"origins": Config.CLIENT_ORIGINS}}, supports_credentials=True)
+
+    # Use the after_request decorator to set Access-Control-Allow
+    app.after_request(set_access_control_allows)
+    
+    #app.before_request(ping_url)
+    app.before_request(check_emerge)
+    # app.before_request(json_check)
+    
+    
+    # Configure logging
+    configure_logging(app)
 
     return app
