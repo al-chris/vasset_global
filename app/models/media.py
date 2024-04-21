@@ -1,5 +1,5 @@
 from flask import request
-from app.extensions import db
+from ..extensions import db
 from sqlalchemy.orm import backref
 from datetime import datetime
 

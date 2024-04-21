@@ -7,9 +7,9 @@ This module defines the settings model for the database.
 @package VASSET
 '''
 
-from app.extensions import db
+from ..extensions import db
 
-from app.utils.helpers.auth_helpers import TwoFactorMethod
+from ..utils.helpers.auth_helpers import TwoFactorMethod
 
 
 notification_type = ['EMAIL', 'IN_APP', 'PUSH']

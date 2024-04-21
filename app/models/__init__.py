@@ -8,7 +8,7 @@ It includes models for User Transaction, Role, etc. Each model corresponds to a 
 @package vasset_global
 '''
 
-from .role import Role, RoleNames
-from .user import User, TempUser, Address, Profile, Identification, IdentificationType, OneTimeToken, NextOfKin
 from .media import Media
+from .user import User, TempUser, Address, Profile, Identification, IdentificationType, OneTimeToken, NextOfKin
 from .settings import TwoFactorMethod, SecuritySetting, UserSettings
+from .role import Role, RoleNames
