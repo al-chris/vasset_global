@@ -17,10 +17,10 @@ from enum import Enum
 
 from app import mail
 from config import Config
-from app.extensions import db
-from app.utils.helpers.basic_helpers import console_log, log_exception
+from ...extensions import db
+from ...utils.helpers.basic_helpers import console_log, log_exception
 from .mail_helpers import send_code_to_email
-from app.models import User, TempUser, OneTimeToken
+from ...models import User, TempUser, OneTimeToken
 
 
 class TwoFactorMethod(Enum):

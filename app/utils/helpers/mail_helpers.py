@@ -5,8 +5,8 @@ from enum import Enum
 
 from app import mail
 from config import Config
-from app.utils.helpers.basic_helpers import console_log, log_exception
-from app.models import User
+from ...utils.helpers.basic_helpers import console_log, log_exception
+from ...models import User
 
 class EmailType(Enum):
     VERIFY_EMAIL = 'verify_email'

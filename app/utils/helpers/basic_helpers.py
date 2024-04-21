@@ -13,9 +13,9 @@ from flask import current_app, abort, request, render_template, url_for
 from slugify import slugify
 from flask_mail import Message
 
-from app.extensions import db
-from app.models import Item
-from app.exceptions import UniqueSlugError
+from ...extensions import db
+from ...models import Item
+from ...exceptions import UniqueSlugError
 from config import Config
 
 

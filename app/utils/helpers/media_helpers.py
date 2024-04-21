@@ -13,8 +13,8 @@ from werkzeug.utils import secure_filename
 import cloudinary
 import cloudinary.uploader
 
-from app.extensions import db
-from app.models import Media
+from ...extensions import db
+from ...models import Media
 from config import Config
 
 cloudinary.config( 
