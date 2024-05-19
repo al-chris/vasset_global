@@ -49,4 +49,13 @@ def create_app(config_name=Config.ENV):
     # Configure logging
     configure_logging(app)
 
+    from .routes import api
+    app.register_blueprint(api)
+
+    return app
+
+
+# For testing
+def create_test_app():
+    app = create_app('config.TestingConfig')
     return app

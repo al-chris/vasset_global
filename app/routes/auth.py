@@ -19,7 +19,7 @@ from app.views import AuthController
 # REGISTRATION ENDPOINTS
 @api.route("/signup", methods=['POST'])
 def signUp():
-    return AuthController.signUp()
+    return AuthController.signup()
 
 @api.route("/verify-email", methods=['POST'])
 def verify_email():

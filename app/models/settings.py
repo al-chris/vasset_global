@@ -59,7 +59,7 @@ class UserSettings(db.Model):
         db.session.commit()
 
 
-# class NotificationPreference(db.Model):
+class NotificationPreference(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     email_new_features = db.Column(db.Boolean, default=False)
@@ -129,7 +129,7 @@ class UserSettings(db.Model):
         }
 
 
-# class UserPreference(db.Model):
+class UserPreference(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     appearance = db.Column(db.String(150), default='light', nullable=False) # 'light', 'dark', or 'system'

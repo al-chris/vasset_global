@@ -9,10 +9,6 @@ from app.views import ProfileController
 def get_user_profile():
     return ProfileController.get_profile()
 
-# @api.route('/profile/edit', methods=['POST'])
-# @jwt_required()
-# def edit_profile():
-#     return ProfileController.edit_profile()
 
 @api.route('/profile/update', methods=['POST'])
 def update_profile():

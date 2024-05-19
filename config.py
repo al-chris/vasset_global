@@ -96,10 +96,18 @@ class ProductionConfig(Config):
     DEBUG_TOOLBAR = False
     EXPOSE_DEBUG_SERVER = False
 
+
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///test.db'
+    WTF_CSRF_ENABLED = False  # Typically disabled during testing
+
+
 # Map config based on environment
 config_by_name = {
     'development': DevelopmentConfig,
     'production': ProductionConfig,
+    'testing': TestingConfig,
 }
 
 def configure_logging(app):

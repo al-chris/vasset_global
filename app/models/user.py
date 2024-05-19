@@ -50,7 +50,8 @@ class User(db.Model):
     identification = db.relationship('Identification', back_populates="vasset_user", uselist=False, cascade="all, delete-orphan")
     roles = db.relationship('Role', secondary='user_roles', backref=db.backref('users', lazy='dynamic'), cascade="all, delete-orphan", single_parent=True)
     nextofkin = db.relationship('NextOfKin', back_populates="vasset_user", uselist=False, cascade="all, delete-orphan")
-    # user_settings = db.relationship('UserSettings', back_populates='vasset_user', uselist=False, cascade='all, delete-orphan')
+    otp_token = db.relationship('OneTimeToken', back_populates="vasset_user", uselist=False, cascade="all, delete-orphan")
+    user_settings = db.relationship('UserSettings', back_populates='vasset_user', uselist=False, cascade='all, delete-orphan')
 
 
     @property
@@ -132,7 +133,7 @@ class OneTimeToken(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     used = db.Column(db.Boolean, default=False)
 
-    vasset_user_id = db.Column(db.Integer, db.ForeignKey('trendit3_user.id', ondelete='CASCADE'))
+    vasset_user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id', ondelete='CASCADE'))
     vasset_user = db.relationship('User', back_populates="otp_token")
     
     def __repr__(self):

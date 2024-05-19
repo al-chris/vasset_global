@@ -9,7 +9,7 @@ It includes methods for checking username, checking email, signing up, resending
 '''
 
 import logging
-from datetime import timedelta
+from datetime import datetime, timedelta
 from flask import request, make_response, jsonify, current_app
 from sqlalchemy.exc import ( IntegrityError, DataError, DatabaseError, InvalidRequestError, )
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -21,7 +21,7 @@ from jwt import ExpiredSignatureError, DecodeError
 import pyotp
 
 from app.extensions import db
-from app.models import User, TempUser, Role, RoleNames, Address, Identification, IdentificationType, Profile, OneTimeToken, NextOfKin
+from app.models import User, TempUser, Role, RoleNames, Address, Identification, IdentificationType, Profile, OneTimeToken, NextOfKin, UserSettings
 from app.utils.helpers.auth_helpers import generate_six_digit_code, save_pwd_reset_token, send_2fa_code
 from app.utils.helpers.email_helpers import send_code_to_email, send_other_emails
 from app.utils.helpers.basic_helpers import log_exception, console_log
@@ -51,11 +51,11 @@ class AuthController:
             gender = data.get('gender', '')
             phone = data.get('phone', '')
             birthday = data.get('birthday', '')
-            profile_picture = data.get('profile_picture_id', '')
+            profile_picture = request.files.get('profile_picture_id', '')
             id_type = data.get('id_type', '')
-            id_issue_date = data.get('id_issue_date', '')
-            id_expiration_date = data.get('id_expiration_date', '')
-            id_picture = data.get('id_picture', '')
+            id_issue_date = datetime.strptime(data.get('id_issue_date', ''), '%Y-%m-%d').date()
+            id_expiration_date = datetime.strptime(data.get('id_expiration_date', ''), '%Y-%m-%d').date()
+            id_picture = request.files.get('id_picture', '')
             bvn = data.get('bvn', '')
             next_of_kin_firstname = data.get('next_of_kin_name', '')
             next_of_kin_lastname = data.get('next_of_kin_lastname', '')
@@ -76,10 +76,21 @@ class AuthController:
                 return {"error": "A required field is not provided."}, 400
             
             
-            
+          
             new_user = User(email=email, username=username)
+
             new_user.password = password
-            new_user_profile = Profile(vasset_user=new_user, firstname=firstname, lastname=lastname, gender=gender, birthday=birthday, phone=phone, bvn=bvn, currency_code=currency_code)
+            
+            new_user_profile = Profile(
+                vasset_user=new_user,
+                firstname=firstname,
+                lastname=lastname,
+                gender=gender,
+                birthday=birthday,
+                phone=phone,
+                bvn=bvn,
+                currency_code=currency_code
+            )
 
             if isinstance(profile_picture, FileStorage) and profile_picture.filename != '':
                 try:
@@ -97,26 +108,40 @@ class AuthController:
 
             new_user_profile.update(profile_picture_id=profile_picture_id)
                         
-            new_user_address = Address(vasset_user=new_user, postal_code=postal_code, country=country, address=address, city=city, state=state)
-            new_user_identification = Identification(vasset_user=new_user, type=Identification.get_id_type_from_string(id_type), issue_data=id_issue_date, expiration_data=id_expiration_date)
-            
+            new_user_address = Address(
+                vasset_user=new_user,
+                postal_code=postal_code,
+                country=country,
+                address=address, 
+                city=city,
+                state=state
+            )
+
             if isinstance(id_picture, FileStorage) and id_picture.filename != '':
                 try:
                     picture_id = save_media(id_picture) # This saves image file, saves the path in db and return the id of the image
                 except Exception as e:
                     current_app.logger.error(f"An error occurred while profile image: {str(e)}")
                     return error_response(f"An error occurred saving profile image: {str(e)}", 400)
-            elif profile_picture == '' and new_user:
+            elif id_picture == '' and new_user:
                 if new_user_identification.picture_id:
                     picture_id = new_user_identification.picture_id
                 else:
-                    picture_id = None
+                    current_app.logger.error(f"An error occurred while saving id image")
+                    return error_response(f"ID image not present", 415)
             else:
-                picture_id = None
-            
-            new_user_identification.update(picture_id=picture_id)
+                current_app.logger.error(f"An error occurred while saving id image")
+                return error_response(f"ID image not present", 415)
 
-            # new_user_setting = UserSettings(vasset_user=new_user)
+            new_user_identification = Identification(
+                vasset_user=new_user,
+                type=Identification.get_id_type_from_string(id_type),
+                issue_date=id_issue_date,
+                expiration_date=id_expiration_date,
+                picture_id=picture_id
+            )
+
+            new_user_setting = UserSettings(vasset_user=new_user)
             role = Role.query.filter_by(name=RoleNames.CUSTOMER).first()
             if role:
                 new_user.roles.append(role)
