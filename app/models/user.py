@@ -111,7 +111,7 @@ class User(db.Model):
                 'phone': self.profile.phone,
                 'birthday': self.profile.birthday,
                 'profile_picture': self.profile.profile_pic,
-                'currency_code': self.address.currency_code
+                'currency_code': self.profile.currency_code
             })
 
         return {
@@ -264,10 +264,10 @@ class Identification(db.Model):
     __tablename__ = "identification"
     
     id = db.Column(db.Integer(), primary_key=True)
-    type = db.Column(db.Enum(IdentificationType), unique=True, nullable=False)
-    issue_date = db.Column(db.Date, nullable=False)
-    expiration_date = db.Column(db.Date, nullable=False)
-    picture_id = db.Column(db.Integer(), db.ForeignKey('media.id'), nullable=False)
+    type = db.Column(db.Enum(IdentificationType), unique=True)
+    issue_date = db.Column(db.Date)
+    expiration_date = db.Column(db.Date)
+    picture_id = db.Column(db.Integer(), db.ForeignKey('media.id'), nullable=True)
     
     vasset_user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id', ondelete='CASCADE'), nullable=False,)
     vasset_user = db.relationship('User', back_populates="identification")
@@ -316,7 +316,7 @@ class Identification(db.Model):
 
 class NextOfKin(db.Model):
     id = db.Column(db.Integer(), unique=True, primary_key=True)
-    relationship = db.Column(db.String(50), nullable=False)
+    relationship = db.Column(db.String(50), nullable=True)
     firstname = db.Column(db.String(200), nullable=True)
     lastname = db.Column(db.String(200), nullable=True)
     gender = db.Column(db.String(50), nullable=True)

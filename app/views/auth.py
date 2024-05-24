@@ -40,30 +40,6 @@ class AuthController:
             email = data.get('email', '')
             username = data.get('username', '')
             password = data.get('password', '')
-            country = data.get('country', '')
-            address = data.get('address', '')
-            state = data.get('state', '')
-            city = data.get('city', '')
-            currency_code = data.get('currency_code', '')
-            postal_code = data.get('postal_code', '')
-            firstname = data.get('firstname', '')
-            lastname = data.get('lastname', '')
-            gender = data.get('gender', '')
-            phone = data.get('phone', '')
-            birthday = data.get('birthday', '')
-            profile_picture = request.files.get('profile_picture_id', '')
-            id_type = data.get('id_type', '')
-            id_issue_date = datetime.strptime(data.get('id_issue_date', ''), '%Y-%m-%d').date()
-            id_expiration_date = datetime.strptime(data.get('id_expiration_date', ''), '%Y-%m-%d').date()
-            id_picture = request.files.get('id_picture', '')
-            bvn = data.get('bvn', '')
-            next_of_kin_firstname = data.get('next_of_kin_name', '')
-            next_of_kin_lastname = data.get('next_of_kin_lastname', '')
-            next_of_kin_relationship = data.get('next_of_kin_relationship', '')
-            next_of_kin_gender = data.get('next_of_kin_gender', '')
-            next_of_kin_phone = data.get('next_of_kin_phone', '')
-            next_of_kin_email = data.get('next_of_kin_email', '')
-            next_of_kin_address = data.get('next_of_kin_address', '')
 
             if User.query.filter_by(username=username).first():
                 return error_response('Username already taken', 409)
@@ -72,7 +48,7 @@ class AuthController:
                 return error_response('Email already taken', 409)
                         
             # Check if any field is empty
-            if not all([firstname, lastname, username, password]):
+            if not all([username, password]):
                 return {"error": "A required field is not provided."}, 400
             
             
@@ -81,74 +57,44 @@ class AuthController:
 
             new_user.password = password
             
-            new_user_profile = Profile(
-                vasset_user=new_user,
-                firstname=firstname,
-                lastname=lastname,
-                gender=gender,
-                birthday=birthday,
-                phone=phone,
-                bvn=bvn,
-                currency_code=currency_code
-            )
+            new_user_profile = Profile(vasset_user=new_user)
 
-            if isinstance(profile_picture, FileStorage) and profile_picture.filename != '':
-                try:
-                    profile_picture_id = save_media(profile_picture) # This saves image file, saves the path in db and return the id of the image
-                except Exception as e:
-                    current_app.logger.error(f"An error occurred while profile image: {str(e)}")
-                    return error_response(f"An error occurred saving profile image: {str(e)}", 400)
-            elif profile_picture == '' and new_user:
-                if new_user_profile.profile_picture_id:
-                    profile_picture_id = new_user_profile.profile_picture_id
-                else:
-                    profile_picture_id = None
-            else:
-                profile_picture_id = None
+            # if isinstance(profile_picture, FileStorage) and profile_picture.filename != '':
+            #     try:
+            #         profile_picture_id = save_media(profile_picture) # This saves image file, saves the path in db and return the id of the image
+            #     except Exception as e:
+            #         current_app.logger.error(f"An error occurred while profile image: {str(e)}")
+            #         return error_response(f"An error occurred saving profile image: {str(e)}", 400)
+            # elif profile_picture == '' and new_user:
+            #     if new_user_profile.profile_picture_id:
+            #         profile_picture_id = new_user_profile.profile_picture_id
+            #     else:
+            #         profile_picture_id = None
+            # else:
+            #     profile_picture_id = None
 
-            new_user_profile.update(profile_picture_id=profile_picture_id)
+            # new_user_profile.update(profile_picture_id=profile_picture_id)
                         
-            new_user_address = Address(
-                vasset_user=new_user,
-                postal_code=postal_code,
-                country=country,
-                address=address, 
-                city=city,
-                state=state
-            )
+            new_user_address = Address(vasset_user=new_user)
 
-            if isinstance(id_picture, FileStorage) and id_picture.filename != '':
-                try:
-                    picture_id = save_media(id_picture) # This saves image file, saves the path in db and return the id of the image
-                except Exception as e:
-                    current_app.logger.error(f"An error occurred while profile image: {str(e)}")
-                    return error_response(f"An error occurred saving profile image: {str(e)}", 400)
-            elif id_picture == '' and new_user:
-                if new_user_identification.picture_id:
-                    picture_id = new_user_identification.picture_id
-                else:
-                    current_app.logger.error(f"An error occurred while saving id image")
-                    return error_response(f"ID image not present", 415)
-            else:
-                current_app.logger.error(f"An error occurred while saving id image")
-                return error_response(f"ID image not present", 415)
-
-            new_user_identification = Identification(
-                vasset_user=new_user,
-                type=Identification.get_id_type_from_string(id_type),
-                issue_date=id_issue_date,
-                expiration_date=id_expiration_date,
-                picture_id=picture_id
-            )
+            new_user_identification = Identification(vasset_user=new_user)
 
             new_user_setting = UserSettings(vasset_user=new_user)
+            
             role = Role.query.filter_by(name=RoleNames.CUSTOMER).first()
             if role:
                 new_user.roles.append(role)
             
-            new_user_next_of_kin = NextOfKin(relationship=next_of_kin_relationship, firstname=next_of_kin_firstname, lastname=next_of_kin_lastname, phone=next_of_kin_phone, email=next_of_kin_email, address=next_of_kin_address, gender=next_of_kin_gender)
+            new_user_next_of_kin = NextOfKin(vasset_user=new_user)
 
-            db.session.add_all([new_user, new_user_profile, new_user_address, new_user_identification, new_user_next_of_kin])
+            db.session.add_all([
+                new_user,
+                new_user_profile,
+                new_user_address, 
+                new_user_identification, 
+                new_user_next_of_kin,
+                new_user_setting
+            ])
             db.session.commit()            
             
             user_data = new_user.to_dict()
@@ -339,7 +285,7 @@ class AuthController:
             identity={
                 'username': user.username,
                 'email': user.email,
-                'two_factor_method': two_factor_method.value
+                # 'two_factor_method': two_factor_method.value
             }
 
             if not user_settings or not two_factor_method:
