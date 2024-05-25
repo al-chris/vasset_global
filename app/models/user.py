@@ -5,7 +5,7 @@ from ..extensions import db
 from config import Config
 from enum import Enum
 
-from ..models import Media
+from ..models import Media, Stock, Business, RealEstate, Crypto, NFT
 from ..models.role import Role, RoleNames
 
 class TempUser(db.Model):
@@ -53,6 +53,12 @@ class User(db.Model):
     otp_token = db.relationship('OneTimeToken', back_populates="vasset_user", uselist=False, cascade="all, delete-orphan")
     user_settings = db.relationship('UserSettings', back_populates='vasset_user', uselist=False, cascade='all, delete-orphan')
 
+    # Asset relationships
+    stocks = db.relationship('Stock', backref='owner', lazy=True)
+    real_estates = db.relationship('RealEstate', backref='owner', lazy=True)
+    businesses = db.relationship('Business', backref='owner', lazy=True)
+    cryptos = db.relationship('Crypto', backref='owner', lazy=True)
+    nfts = db.relationship('NFT', backref='owner', lazy=True)
 
     @property
     def password(self):

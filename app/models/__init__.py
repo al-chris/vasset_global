@@ -12,3 +12,4 @@ from .media import Media
 from .user import User, TempUser, Address, Profile, Identification, IdentificationType, OneTimeToken, NextOfKin
 from .settings import TwoFactorMethod, SecuritySetting, UserSettings
 from .role import Role, RoleNames
+from .assets import Stock, RealEstate, Business, Crypto, NFT
