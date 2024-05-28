@@ -6,7 +6,6 @@ from config import Config
 from enum import Enum
 
 from app.models import Media
-# , Stock, Business, RealEstate, Crypto, NFT
 from app.models.role import Role, RoleNames
 
 class TempUser(db.Model):
