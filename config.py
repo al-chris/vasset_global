@@ -25,8 +25,8 @@ class Config:
     STATIC_DIR = 'app/static'
     UPLOADS_DIR = 'app/static/uploads'
     EMERGENCY_MODE = os.environ.get('EMERGENCY_MODE') or False
-    DOMAIN_NAME = os.environ.get('DOMAIN_NAME') or 'https://www.trendit3.com'
-    API_DOMAIN_NAME = os.environ.get('API_DOMAIN_NAME') or 'https://api.trendit3.com'
+    DOMAIN_NAME = os.environ.get('DOMAIN_NAME') or 'https://www.vassetglobal.com'
+    API_DOMAIN_NAME = os.environ.get('API_DOMAIN_NAME') or 'https://api.vassetglobal.com'
     CLIENT_ORIGINS = os.environ.get('CLIENT_ORIGINS') or 'http://localhost:3000,http://localhost:5173,https://trendit3.vercel.app'
     CLIENT_ORIGINS = [origin.strip() for origin in CLIENT_ORIGINS.split(',')]
     
