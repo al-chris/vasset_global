@@ -4,7 +4,7 @@ This module defines basic helper functions for the Trendit³ Flask application.
 These functions perform common tasks that are used throughout the application.
 
 @author: Chris
-@link: https://github.com/zeddyemy
+@link: https://github.com/al-chris
 @package: VASSET
 '''
 import random, string, secrets, logging, time

@@ -5,8 +5,8 @@ from ..extensions import db
 from config import Config
 from enum import Enum
 
-from ..models import Media, Stock, Business, RealEstate, Crypto, NFT
-from ..models.role import Role, RoleNames
+from app.models import Media, Stock, Business, RealEstate, Crypto, NFT
+from app.models.role import Role, RoleNames
 
 class TempUser(db.Model):
     '''
