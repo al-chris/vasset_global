@@ -167,7 +167,7 @@ class ProfileController:
                 type=data.get('id_type', user_identification.type if user_identification else ''),
                 issue_date=data.get('id_issue_date', user_identification.issue_date if user_identification else ''),
                 expiration_date=data.get('id_expiration_date', user_identification.expiration_date if user_identification else ''),
-                id_picture=data.get('id_picture', user_identification.id_picture if user_identification else '')
+                picture_id=data.get('id_picture', user_identification.picture_id if user_identification else '')
             )
 
             extra_data = {'user_data': current_user.to_dict()}
