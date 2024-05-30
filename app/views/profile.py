@@ -7,7 +7,7 @@ from flask_jwt_extended import create_access_token, decode_token, get_jwt_identi
 from flask_jwt_extended.exceptions import JWTDecodeError
 
 from ..extensions import db
-from ..models import User, Address, Profile
+from ..models import User, Address, Profile, IdentificationType
 from app.models.user import User, Address, Profile
 # from ..utils.helpers.location_helpers import get_currency_info
 from app.utils.helpers.basic_helpers import console_log, log_exception
@@ -164,7 +164,7 @@ class ProfileController:
             user_identification = current_user.identification
 
             user_identification.update(
-                type=data.get('id_type', user_identification.type if user_identification else ''),
+                type=IdentificationType[data.get('id_type', user_identification.type if user_identification else 'none')],
                 issue_date=data.get('id_issue_date', user_identification.issue_date if user_identification else ''),
                 expiration_date=data.get('id_expiration_date', user_identification.expiration_date if user_identification else ''),
                 picture_id=data.get('id_picture', user_identification.picture_id if user_identification else '')
