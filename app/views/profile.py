@@ -164,7 +164,7 @@ class ProfileController:
             user_identification = current_user.identification
 
             user_identification.update(
-                id_type=data.get('id_type', user_identification.id_type if user_identification else ''),
+                type=data.get('id_type', user_identification.id_type if user_identification else ''),
                 issue_date=data.get('id_issue_date', user_identification.issue_date if user_identification else ''),
                 expiration_date=data.get('id_expiration_date', user_identification.expiration_date if user_identification else ''),
                 id_picture=data.get('id_picture', user_identification.id_picture if user_identification else '')
