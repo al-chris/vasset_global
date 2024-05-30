@@ -453,24 +453,28 @@ class AuthController:
     def delete_account():
         try:
             current_user_id = get_jwt_identity()
+            
+            if current_user_id is None:
+                return error_response('Invalid user identity', 401)
+            
             current_user = User.query.get(current_user_id)
+            
             if not current_user:
-                return error_response(f"user not found", 404)
-            
-            '''
-            data = request.get_json()
-            pwd = data.get('password', '')
-            if not pwd:
-                return error_response('Password is required', 400)
-            
-            if not current_user.verify_password(pwd):
-                return error_response('Password is incorrect', 401)
-            '''
+                return error_response('User not found', 404)
+
+            # Uncomment if password verification is required
+            # data = request.get_json()
+            # pwd = data.get('password', '')
+            # if not pwd:
+            #     return error_response('Password is required', 400)
+            # if not current_user.verify_password(pwd):
+            #     return error_response('Password is incorrect', 401)
             
             # Proceed with account deletion
-            current_user.delete()
+            db.session.delete(current_user)
+            db.session.commit()
             
-            api_response = success_response('account deleted successfully', 200)
+            api_response = success_response('Account deleted successfully', 200)
             
         except Exception as e:
             db.session.rollback()
