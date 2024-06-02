@@ -23,7 +23,7 @@ import pyotp
 from app.extensions import db
 from app.models import User, TempUser, Role, RoleNames, Address, Identification, IdentificationType, Profile, OneTimeToken, NextOfKin, UserSettings
 from app.utils.helpers.auth_helpers import generate_six_digit_code, save_pwd_reset_token, send_2fa_code
-from app.utils.helpers.email_helpers import send_code_to_email, send_other_emails
+from app.utils.helpers.email_helpers import send_code_to_email, send_other_emails, EmailType
 from app.utils.helpers.basic_helpers import log_exception, console_log
 from app.utils.helpers.user_helpers import get_vasset_user, is_email_exist, is_user_exist
 from app.utils.helpers.media_helpers import save_media
@@ -347,7 +347,7 @@ class AuthController:
             reset_code = generate_six_digit_code()
             
             try:
-                send_code_to_email(user.email, reset_code, code_type='pwd_reset') # send reset code to user's email
+                send_code_to_email(user.email, reset_code, code_type=EmailType.PWD_RESET) # send reset code to user's email
             except Exception as e:
                 return error_response(f'An error occurred while sending the reset code to the email address', 500)
             

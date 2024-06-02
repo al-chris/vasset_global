@@ -8,7 +8,7 @@ from config import Config
 from ...utils.helpers.basic_helpers import console_log, log_exception
 from ...models import User
 
-base_url = 'https://app.trendit3.com/'
+base_url = 'https://vassetglobal.com/'
 
 class EmailType(Enum):
     VERIFY_EMAIL = 'verify_email'
