@@ -74,3 +74,22 @@ def add_nft():
 @jwt_required()
 def get_nfts():
     AssetsController.get_nfts()
+
+# SocialMedia endpoints
+@api.route('/users/social_media', methods=['POST'])
+@jwt_required()
+def add_social_media():
+    AssetsController.add_social_media()
+
+
+@api.route('/users/social_media', methods=['GET'])
+@jwt_required()
+def get_social_media():
+    AssetsController.get_social_media()
+
+# Get all assets
+@api.route('/users/assets', methods=['GET'])
+@jwt_required()
+def get_all_assets():
+    AssetsController.get_all_assets()
+# app/views/assets.py

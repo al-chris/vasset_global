@@ -21,7 +21,7 @@ from jwt import ExpiredSignatureError, DecodeError
 import pyotp
 
 from app.extensions import db
-from app.models import User, Stock, RealEstate, Business, Crypto, NFT
+from app.models import User, Stock, RealEstate, Business, Crypto, NFT, SocialMedia
 from app.utils.helpers.auth_helpers import generate_six_digit_code, save_pwd_reset_token, send_2fa_code
 from app.utils.helpers.email_helpers import send_code_to_email, send_other_emails
 from app.utils.helpers.basic_helpers import log_exception, console_log
@@ -135,3 +135,47 @@ class AssetsController:
         user_id = get_jwt_identity()
         nfts = NFT.query.filter_by(user_id=user_id).all()
         return jsonify([{'id': nft.id, 'name': nft.name, 'uri': nft.uri} for nft in nfts])
+
+
+    @staticmethod
+    def add_social_media():
+        user_id = get_jwt_identity()
+        data = request.get_json()
+        try:
+            platform = data.get('platform')
+            username = data.get('username')
+            new_socialmedia = SocialMedia(platform=platform, username=username, user_id=user_id)
+            db.session.add(new_socialmedia)
+            db.session.commit()
+            return jsonify({'message': 'Social media added successfully'}), 201
+        
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'error': str(e)}), 400
+        
+    
+    @staticmethod
+    def get_social_media():
+        user_id = get_jwt_identity()
+        socialmedia = SocialMedia.query.filter_by(user_id=user_id).all()
+        return jsonify([{'id': social.id, 'platform': social.platform, 'username': social.username} for social in socialmedia])
+    
+
+    @staticmethod
+    def get_all_assets():
+        user_id = get_jwt_identity()
+        stocks = Stock.query.filter_by(user_id=user_id).all()
+        real_estates = RealEstate.query.filter_by(user_id=user_id).all()
+        businesses = Business.query.filter_by(user_id=user_id).all()
+        cryptos = Crypto.query.filter_by(user_id=user_id).all()
+        nfts = NFT.query.filter_by(user_id=user_id).all()
+        socialmedia = SocialMedia.query.filter_by(user_id=user_id).all()
+
+        return jsonify({
+            'stocks': [{'id': stock.id, 'symbol': stock.symbol, 'quantity': stock.quantity} for stock in stocks],
+            'real_estates': [{'id': real_estate.id, 'address': real_estate.address, 'value': real_estate.value} for real_estate in real_estates],
+            'businesses': [{'id': business.id, 'name': business.name, 'description': business.description} for business in businesses],
+            'cryptos': [{'id': crypto.id, 'symbol': crypto.symbol, 'amount': crypto.amount} for crypto in cryptos],
+            'nfts': [{'id': nft.id, 'name': nft.name, 'uri': nft.uri} for nft in nfts],
+            'social_media': [{'id': social.id, 'platform': social.platform, 'username': social.username} for social in socialmedia]
+        })
