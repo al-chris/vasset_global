@@ -119,6 +119,7 @@ class AssetsController:
     def add_nft():
         user_id = get_jwt_identity()
         data = request.get_json()
+        print(data)
         try:
             name = data.get('name')
             uri = data.get('uri')
