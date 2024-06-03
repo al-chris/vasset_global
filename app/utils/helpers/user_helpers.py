@@ -10,9 +10,65 @@ These functions assist with tasks such as:
 @link: https://github.com/al-chris
 @package: VASSET
 '''
+from flask import current_app
+from threading import Thread
 from ...extensions import db
 from ...models.user import User, Address, Profile
-from ...utils.helpers.basic_helpers import generate_random_string
+from ...utils.helpers.basic_helpers import generate_random_string, log_exception
+from ...utils.helpers.media_helpers import save_media
+from werkzeug.datastructures import FileStorage
+
+
+def async_save_id_img(app, user: User, media_file):
+    with app.app_context():
+        try:
+            user_identification = user.identification
+            if isinstance(media_file, FileStorage) and media_file.filename != '':
+                try:
+                    identification_image = save_media(media_file) # This saves image file, saves the path in db and return the Media instance
+                except Exception as e:
+                    log_exception(f"An error occurred saving profile image: {str(e)}")
+            elif identification_image == '' and user:
+                if user_identification.profile_picture_id:
+                    identification_image = user_identification.profile_picture
+                else:
+                    identification_image = None
+            else:
+                identification_image = None
+            
+            user_identification.update(identification_pic=identification_image)
+        except Exception as e:
+            log_exception()
+            raise e
+
+def save_id_img(user: User, media_file: FileStorage):
+    Thread(target=async_save_id_img, args=(current_app._get_current_object(), user, media_file)).start()
+
+
+def async_save_profile_pic(app, user: User, media_file):
+    with app.app_context():
+        try:
+            user_profile = user.profile
+            if isinstance(media_file, FileStorage) and media_file.filename != '':
+                try:
+                    profile_picture = save_media(media_file) # This saves image file, saves the path in db and return the Media instance
+                except Exception as e:
+                    log_exception(f"An error occurred saving profile image: {str(e)}")
+            elif profile_picture == '' and user:
+                if user_profile.profile_picture_id:
+                    profile_picture = user_profile.profile_picture
+                else:
+                    profile_picture = None
+            else:
+                profile_picture = None
+            
+            user_profile.update(profile_picture=profile_picture)
+        except Exception as e:
+            log_exception()
+            raise e
+
+def save_profile_pic(user: User, media_file: FileStorage):
+    Thread(target=async_save_profile_pic, args=(current_app._get_current_object(), user, media_file)).start()
 
 
 def get_user_info(userId):

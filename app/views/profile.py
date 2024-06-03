@@ -11,7 +11,7 @@ from ..models import User, Address, Profile, IdentificationType
 from app.models.user import User, Address, Profile
 # from ..utils.helpers.location_helpers import get_currency_info
 from app.utils.helpers.basic_helpers import console_log, log_exception
-from app.utils.helpers.user_helpers import get_user_info
+from app.utils.helpers.user_helpers import get_user_info, save_profile_pic, save_id_img
 from app.utils.helpers.media_helpers import save_media
 from app.utils.helpers.user_helpers import is_username_exist, is_email_exist
 from app.utils.helpers.auth_helpers import send_code_to_email, generate_six_digit_code
@@ -56,32 +56,20 @@ class ProfileController:
             
             user_profile = current_user.profile
 
-            profile_picture = data.get('profile_picture_id', user_profile.profile_picture if user_profile else '')
+            profile_picture = request.files.get('profile_picture', '')
             
             console_log('profile_picture', profile_picture)
             
             if is_username_exist(data.get('username'), current_user):
                 return error_response('Username already Taken', 409)
             
-            if isinstance(profile_picture, FileStorage) and profile_picture.filename != '':
-                try:
-                    profile_picture_id = save_media(profile_picture) # This saves image file, saves the path in db and return the id of the image
-                except Exception as e:
-                    current_app.logger.error(f"An error occurred while profile image: {str(e)}")
-                    return error_response(f"An error occurred saving profile image: {str(e)}", 400)
-            elif profile_picture == '' and current_user:
-                if user_profile.profile_picture_id:
-                    profile_picture_id = user_profile.profile_picture_id
-                else:
-                    profile_picture_id = None
-            else:
-                profile_picture_id = None
+            save_profile_pic(current_user, profile_picture)
 
             user_profile.update(
                 firstname=data.get('firstname', user_profile.firstname if user_profile else ''),
                 lastname=data.get('lastname', user_profile.lastname if user_profile else ''),
                 gender=data.get('gender', user_profile.gender if user_profile else ''),
-                profile_picture_id=profile_picture_id,
+                # profile_picture_id=profile_picture_id,
                 birthday=data.get('birthday', user_profile.birthday if user_profile else ''),
                 currency_code=data.get('currency_code', user_profile.currency_code if user_profile else ''),
                 phone=data.get('phone', user_profile.phone if user_profile else ''),
@@ -163,11 +151,13 @@ class ProfileController:
             
             user_identification = current_user.identification
 
+            save_id_img(current_user, request.files.get('id_picture', '') )
+
             user_identification.update(
                 type=IdentificationType(data.get('id_type', user_identification.type if user_identification else 'none')),
                 issue_date=data.get('id_issue_date', user_identification.issue_date if user_identification else ''),
                 expiration_date=data.get('id_expiration_date', user_identification.expiration_date if user_identification else ''),
-                picture_id=data.get('id_picture', user_identification.picture_id if user_identification else '')
+                # picture_id=data.get('id_picture', user_identification.picture_id if user_identification else '')
             )
 
             extra_data = {'user_data': current_user.to_dict()}

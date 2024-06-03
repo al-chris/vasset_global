@@ -146,6 +146,7 @@ class SocialMedia(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     platform = db.Column(db.String(100), nullable=False)
     username = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(1500))
     proof_pic_id = db.Column(db.Integer(), db.ForeignKey('media.id'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
@@ -157,8 +158,8 @@ class SocialMedia(db.Model):
     
     @property
     def proof_pic(self):
-        if self.profile_picture_id:
-            theImage = Media.query.get(self.profile_picture_id)
+        if self.proof_pic_id:
+            theImage = Media.query.get(self.proof_pic_id)
             if theImage:
                 return theImage.get_path()
             else:

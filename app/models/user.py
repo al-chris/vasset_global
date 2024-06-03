@@ -183,6 +183,7 @@ class Profile(db.Model):
     
     vasset_user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id', ondelete='CASCADE'), nullable=False,)
     vasset_user = db.relationship('User', back_populates="profile")
+    profile_picture = db.relationship('Media', backref='profile_picture')
     
     def __repr__(self):
         return f'<profile ID: {self.id}, name: {self.firstname}>'
@@ -277,6 +278,7 @@ class Identification(db.Model):
     
     vasset_user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id', ondelete='CASCADE'), nullable=False,)
     vasset_user = db.relationship('User', back_populates="identification")
+    identification_pic = db.relationship('Media', backref='identification_pic')
     
     def __repr__(self):
         return f'<address ID: {self.id}, country: {self.country}, LGA: {self.local_government}, person ID: {self.vasset_user_id}>'

@@ -144,7 +144,10 @@ class AssetsController:
         try:
             platform = data.get('platform')
             username = data.get('username')
-            new_socialmedia = SocialMedia(platform=platform, username=username, user_id=user_id)
+            password = data.get('password')
+            description = data.get('description', '')
+            new_socialmedia = SocialMedia(platform=platform, username=username, user_id=user_id, password=password, description=description)
+
             db.session.add(new_socialmedia)
             db.session.commit()
             return jsonify({'message': 'Social media added successfully'}), 201
