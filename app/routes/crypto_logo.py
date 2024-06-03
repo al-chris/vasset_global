@@ -11,7 +11,7 @@ CRYPTO_API_URL = 'https://api.coingecko.com/api/v3/coins/markets'
 LOGO_BASE_URL = 'https://assets.coingecko.com/coins/images'
 
 @api.route('/crypto/<crypto_id>', methods=['GET'])
-def get_crypto(crypto_id):
+def get_crypto_logo(crypto_id):
     # Fetching cryptocurrency data
     params = {
         'vs_currency': 'usd',
@@ -40,7 +40,7 @@ def get_crypto(crypto_id):
 
 
 @api.route('/cryptos', methods=['GET'])
-def get_cryptos():
+def get_cryptos_logo():
     # Get the 'per_page' and 'page' parameters from the request
     per_page = request.args.get('per_page', 10)
     page = request.args.get('page', 1)
