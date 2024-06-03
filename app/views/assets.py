@@ -122,6 +122,7 @@ class AssetsController:
         print(data)
         try:
             name = data.get('name')
+            print(name)
             uri = data.get('uri')
             new_nft = NFT(name=name, uri=uri, user_id=user_id)
             db.session.add(new_nft)
