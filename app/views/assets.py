@@ -119,15 +119,22 @@ class AssetsController:
     def add_nft():
         user_id = get_jwt_identity()
         data = request.get_json()
-        print(data)
+        
         try:
+            if not data:
+                return jsonify({'error': 'No data provided'}), 400
+
             name = data.get('name')
-            print(name)
             uri = data.get('uri')
+
+            if not name or not uri:
+                return jsonify({'error': 'Name and URI are required'}), 400
+            
             new_nft = NFT(name=name, uri=uri, user_id=user_id)
             db.session.add(new_nft)
             db.session.commit()
             return jsonify({'message': 'NFT added successfully'}), 201
+        
         except Exception as e:
             db.session.rollback()
             return jsonify({'error': str(e)}), 400
