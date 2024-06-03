@@ -260,7 +260,6 @@ class Address(db.Model):
 
 
 class IdentificationType(Enum):
-    NONE = 'none'
     PASSPORT = 'passport'
     NIN = 'nin'
     DRIVERS_LICENCE = 'drivers licence'
@@ -271,7 +270,7 @@ class Identification(db.Model):
     __tablename__ = "identification"
     
     id = db.Column(db.Integer(), primary_key=True)
-    type = db.Column(db.Enum(IdentificationType), default=IdentificationType.NONE)
+    type = db.Column(db.Enum(IdentificationType))
     issue_date = db.Column(db.Date)
     expiration_date = db.Column(db.Date)
     picture_id = db.Column(db.Integer(), db.ForeignKey('media.id'), nullable=True)
