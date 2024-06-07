@@ -1126,6 +1126,79 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "crypto logo",
+			"item": [
+				{
+					"name": "cryptos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/cryptos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"cryptos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "crypto",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/crypto/bitcoin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"crypto",
+								"bitcoin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "curl",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=ethereum",
+							"protocol": "https",
+							"host": [
+								"api",
+								"coingecko",
+								"com"
+							],
+							"path": [
+								"api",
+								"v3",
+								"coins",
+								"markets"
+							],
+							"query": [
+								{
+									"key": "vs_currency",
+									"value": "usd"
+								},
+								{
+									"key": "ids",
+									"value": "ethereum"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
