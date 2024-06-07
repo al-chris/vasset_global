@@ -10,8 +10,8 @@ It includes methods for checking username, checking email, signing up, resending
 
 import logging
 from datetime import datetime, timedelta
-from flask import request, make_response, jsonify, current_app
-from sqlalchemy.exc import ( IntegrityError, DataError, DatabaseError, InvalidRequestError, )
+from flask import request, jsonify, current_app
+from sqlalchemy.exc import (IntegrityError, DataError, DatabaseError, InvalidRequestError)
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import UnsupportedMediaType
 from werkzeug.datastructures import FileStorage
@@ -29,8 +29,6 @@ from app.utils.helpers.user_helpers import get_vasset_user, is_email_exist, is_u
 from app.utils.helpers.media_helpers import save_media
 from app.utils.response import error_response, success_response
 
-
-
 class AssetsController:
 
     @staticmethod
@@ -43,17 +41,32 @@ class AssetsController:
             new_stock = Stock(symbol=symbol, quantity=quantity, user_id=user_id)
             db.session.add(new_stock)
             db.session.commit()
-            return jsonify({'message': 'Stock added successfully'}), 201
+            return success_response('Stock added successfully', 201)
         except Exception as e:
             db.session.rollback()
-            return jsonify({'error': str(e)}), 400
-    
+            return error_response(str(e), 400)
+
     @staticmethod
     def get_stocks():
-        user_id = get_jwt_identity()
-        stocks = Stock.query.filter_by(user_id=user_id).all()
-        return jsonify([{'id': stock.id, 'symbol': stock.symbol, 'quantity': stock.quantity} for stock in stocks])
-    
+        try:
+            user_id = get_jwt_identity()
+            if not user_id:
+                return error_response('User identity not found', 401)
+
+            stocks = Stock.query.filter_by(user_id=user_id).all()
+            stocks_list = [{'id': stock.id, 'symbol': stock.symbol, 'quantity': stock.quantity} for stock in stocks]
+            return success_response(stocks_list if stocks_list else [], 200)
+        except IntegrityError as e:
+            return error_response('Integrity error', 400, str(e.orig))
+        except DataError as e:
+            return error_response('Data error', 400, str(e.orig))
+        except InvalidRequestError as e:
+            return error_response('Invalid request', 400, str(e.orig))
+        except DatabaseError as e:
+            return error_response('Database error', 500, str(e.orig))
+        except Exception as e:
+            return error_response('An unexpected error occurred', 500, str(e))
+
     @staticmethod
     def add_real_estate():
         user_id = get_jwt_identity()
@@ -64,17 +77,32 @@ class AssetsController:
             new_real_estate = RealEstate(address=address, value=value, user_id=user_id)
             db.session.add(new_real_estate)
             db.session.commit()
-            return jsonify({'message': 'Real estate added successfully'}), 201
+            return success_response('Real estate added successfully', 201)
         except Exception as e:
             db.session.rollback()
-            return jsonify({'error': str(e)}), 400
-    
+            return error_response(str(e), 400)
+
     @staticmethod
     def get_real_estates():
-        user_id = get_jwt_identity()
-        real_estates = RealEstate.query.filter_by(user_id=user_id).all()
-        return jsonify([{'id': real_estate.id, 'address': real_estate.address, 'value': real_estate.value} for real_estate in real_estates])
-    
+        try:
+            user_id = get_jwt_identity()
+            if not user_id:
+                return error_response('User identity not found', 401)
+
+            real_estates = RealEstate.query.filter_by(user_id=user_id).all()
+            real_estates_list = [{'id': real_estate.id, 'address': real_estate.address, 'value': real_estate.value} for real_estate in real_estates]
+            return success_response(real_estates_list if real_estates_list else [], 200)
+        except IntegrityError as e:
+            return error_response('Integrity error', 400, str(e.orig))
+        except DataError as e:
+            return error_response('Data error', 400, str(e.orig))
+        except InvalidRequestError as e:
+            return error_response('Invalid request', 400, str(e.orig))
+        except DatabaseError as e:
+            return error_response('Database error', 500, str(e.orig))
+        except Exception as e:
+            return error_response('An unexpected error occurred', 500, str(e))
+
     @staticmethod
     def add_business():
         user_id = get_jwt_identity()
@@ -85,17 +113,32 @@ class AssetsController:
             new_business = Business(name=name, description=description, user_id=user_id)
             db.session.add(new_business)
             db.session.commit()
-            return jsonify({'message': 'Business added successfully'}), 201
+            return success_response('Business added successfully', 201)
         except Exception as e:
             db.session.rollback()
-            return jsonify({'error': str(e)}), 400
-    
+            return error_response(str(e), 400)
+
     @staticmethod
     def get_businesses():
-        user_id = get_jwt_identity()
-        businesses = Business.query.filter_by(user_id=user_id).all()
-        return jsonify([{'id': business.id, 'name': business.name, 'description': business.description} for business in businesses])
-    
+        try:
+            user_id = get_jwt_identity()
+            if not user_id:
+                return error_response('User identity not found', 401)
+
+            businesses = Business.query.filter_by(user_id=user_id).all()
+            businesses_list = [{'id': business.id, 'name': business.name, 'description': business.description} for business in businesses]
+            return success_response(businesses_list if businesses_list else [], 200)
+        except IntegrityError as e:
+            return error_response('Integrity error', 400, str(e.orig))
+        except DataError as e:
+            return error_response('Data error', 400, str(e.orig))
+        except InvalidRequestError as e:
+            return error_response('Invalid request', 400, str(e.orig))
+        except DatabaseError as e:
+            return error_response('Database error', 500, str(e.orig))
+        except Exception as e:
+            return error_response('An unexpected error occurred', 500, str(e))
+
     @staticmethod
     def add_crypto():
         user_id = get_jwt_identity()
@@ -104,47 +147,76 @@ class AssetsController:
             new_crypto = Crypto(symbol=data['symbol'], amount=data['amount'], user_id=user_id)
             db.session.add(new_crypto)
             db.session.commit()
-            return jsonify({'message': 'Crypto added successfully'}), 201
+            return success_response('Crypto added successfully', 201)
         except Exception as e:
             db.session.rollback()
-            return jsonify({'error': str(e)}), 400
-    
+            return error_response(str(e), 400)
+
     @staticmethod
     def get_cryptos():
-        user_id = get_jwt_identity()
-        cryptos = Crypto.query.filter_by(user_id=user_id).all()
-        return jsonify([{'id': crypto.id, 'symbol': crypto.symbol, 'amount': crypto.amount} for crypto in cryptos])
-    
+        try:
+            user_id = get_jwt_identity()
+            if not user_id:
+                return error_response('User identity not found', 401)
+
+            cryptos = Crypto.query.filter_by(user_id=user_id).all()
+            cryptos_list = [{'id': crypto.id, 'symbol': crypto.symbol, 'amount': crypto.amount} for crypto in cryptos]
+            return success_response(cryptos_list if cryptos_list else [], 200)
+        except IntegrityError as e:
+            return error_response('Integrity error', 400, str(e.orig))
+        except DataError as e:
+            return error_response('Data error', 400, str(e.orig))
+        except InvalidRequestError as e:
+            return error_response('Invalid request', 400, str(e.orig))
+        except DatabaseError as e:
+            return error_response('Database error', 500, str(e.orig))
+        except Exception as e:
+            return error_response('An unexpected error occurred', 500, str(e))
+
     @staticmethod
     def add_nft():
         user_id = get_jwt_identity()
         data = request.get_json()
-        
+
         try:
             if not data:
-                return jsonify({'error': 'No data provided'}), 400
+                return error_response('No data provided', 400)
 
             name = data.get('name')
             uri = data.get('uri')
 
             if not name or not uri:
-                return jsonify({'error': 'Name and URI are required'}), 400
-            
+                return error_response('Name and URI are required', 400)
+
             new_nft = NFT(name=name, uri=uri, user_id=user_id)
             db.session.add(new_nft)
             db.session.commit()
-            return jsonify({'message': 'NFT added successfully'}), 201
-        
+            return success_response('NFT added successfully', 201)
+
         except Exception as e:
             db.session.rollback()
-            return jsonify({'error': str(e)}), 400
-    
+            return error_response(str(e), 400)
+
     @staticmethod
     def get_nfts():
-        user_id = get_jwt_identity()
-        nfts = NFT.query.filter_by(user_id=user_id).all()
-        return jsonify([{'id': nft.id, 'name': nft.name, 'uri': nft.uri} for nft in nfts])
+        try:
+            user_id = get_jwt_identity()
+            if not user_id:
+                return error_response('User identity not found', 401)
 
+            nfts = NFT.query.filter_by(user_id=user_id).all()
+            nfts_list = [{'id': nft.id, 'name': nft.name, 'uri': nft.uri} for nft in nfts]
+            return success_response(nfts_list if nfts_list else [], 200)
+        except IntegrityError as e:
+            return error_response('Integrity error', 400, str(e.orig))
+        except DataError as e:
+            return error_response('Data error', 400, str(e.orig))
+        except InvalidRequestError as e:
+            return error_response('Invalid request', 400, str(e.orig))
+        except DatabaseError as e:
+            return error_response('Database error', 500, str(e.orig))
+        except Exception as e:
+            return error_response('An unexpected error occurred', 500, str(e))
 
     @staticmethod
     def add_social_media():
@@ -159,35 +231,63 @@ class AssetsController:
 
             db.session.add(new_socialmedia)
             db.session.commit()
-            return jsonify({'message': 'Social media added successfully'}), 201
-        
+            return success_response('Social media added successfully', 201)
+
         except Exception as e:
             db.session.rollback()
-            return jsonify({'error': str(e)}), 400
-        
-    
+            return error_response(str(e), 400)
+
     @staticmethod
     def get_social_media():
-        user_id = get_jwt_identity()
-        socialmedia = SocialMedia.query.filter_by(user_id=user_id).all()
-        return jsonify([{'id': social.id, 'platform': social.platform, 'username': social.username} for social in socialmedia])
-    
+        try:
+            user_id = get_jwt_identity()
+            if not user_id:
+                return error_response('User identity not found', 401)
+
+            socialmedia = SocialMedia.query.filter_by(user_id=user_id).all()
+            socialmedia_list = [{'id': social.id, 'platform': social.platform, 'username': social.username} for social in socialmedia]
+            return success_response(socialmedia_list if socialmedia_list else [], 200)
+        except IntegrityError as e:
+            return error_response('Integrity error', 400, str(e.orig))
+        except DataError as e:
+            return error_response('Data error', 400, str(e.orig))
+        except InvalidRequestError as e:
+            return error_response('Invalid request', 400, str(e.orig))
+        except DatabaseError as e:
+            return error_response('Database error', 500, str(e.orig))
+        except Exception as e:
+            return error_response('An unexpected error occurred', 500, str(e))
 
     @staticmethod
     def get_all_assets():
-        user_id = get_jwt_identity()
-        stocks = Stock.query.filter_by(user_id=user_id).all()
-        real_estates = RealEstate.query.filter_by(user_id=user_id).all()
-        businesses = Business.query.filter_by(user_id=user_id).all()
-        cryptos = Crypto.query.filter_by(user_id=user_id).all()
-        nfts = NFT.query.filter_by(user_id=user_id).all()
-        socialmedia = SocialMedia.query.filter_by(user_id=user_id).all()
+        try:
+            user_id = get_jwt_identity()
+            if not user_id:
+                return error_response('User identity not found', 401)
 
-        return jsonify({
-            'stocks': [{'id': stock.id, 'symbol': stock.symbol, 'quantity': stock.quantity} for stock in stocks],
-            'real_estates': [{'id': real_estate.id, 'address': real_estate.address, 'value': real_estate.value} for real_estate in real_estates],
-            'businesses': [{'id': business.id, 'name': business.name, 'description': business.description} for business in businesses],
-            'cryptos': [{'id': crypto.id, 'symbol': crypto.symbol, 'amount': crypto.amount} for crypto in cryptos],
-            'nfts': [{'id': nft.id, 'name': nft.name, 'uri': nft.uri} for nft in nfts],
-            'social_media': [{'id': social.id, 'platform': social.platform, 'username': social.username} for social in socialmedia]
-        })
+            stocks = Stock.query.filter_by(user_id=user_id).all()
+            real_estates = RealEstate.query.filter_by(user_id=user_id).all()
+            businesses = Business.query.filter_by(user_id=user_id).all()
+            cryptos = Crypto.query.filter_by(user_id=user_id).all()
+            nfts = NFT.query.filter_by(user_id=user_id).all()
+            socialmedia = SocialMedia.query.filter_by(user_id=user_id).all()
+
+            assets = {
+                'stocks': [{'id': stock.id, 'symbol': stock.symbol, 'quantity': stock.quantity} for stock in stocks],
+                'real_estates': [{'id': real_estate.id, 'address': real_estate.address, 'value': real_estate.value} for real_estate in real_estates],
+                'businesses': [{'id': business.id, 'name': business.name, 'description': business.description} for business in businesses],
+                'cryptos': [{'id': crypto.id, 'symbol': crypto.symbol, 'amount': crypto.amount} for crypto in cryptos],
+                'nfts': [{'id': nft.id, 'name': nft.name, 'uri': nft.uri} for nft in nfts],
+                'social_media': [{'id': social.id, 'platform': social.platform, 'username': social.username} for social in socialmedia]
+            }
+            return success_response(assets, 200)
+        except IntegrityError as e:
+            return error_response('Integrity error', 400, str(e.orig))
+        except DataError as e:
+            return error_response('Data error', 400, str(e.orig))
+        except InvalidRequestError as e:
+            return error_response('Invalid request', 400, str(e.orig))
+        except DatabaseError as e:
+            return error_response('Database error', 500, str(e.orig))
+        except Exception as e:
+            return error_response('An unexpected error occurred', 500, str(e))
