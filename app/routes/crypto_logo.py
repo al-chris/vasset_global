@@ -15,7 +15,7 @@ def get_crypto_logo(crypto_id):
     # Fetching cryptocurrency data
     params = {
         'vs_currency': 'usd',
-        'ids': crypto_id
+        'ids': str(crypto_id)
     }
     response = requests.get(CRYPTO_API_URL, params=params)
     
