@@ -1,745 +1,1165 @@
 {
-    "info": {
-      "name": "Vasset Global API",
-      "_postman_id": "12345678-abcd-efgh-ijkl-123456789012",
-      "description": "This collection defines the API endpoints for the Vasset Global Flask application.",
-      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-    },
-    "item": [
-      {
-        "name": "Auth",
-        "item": [
-          {
-            "name": "Signup",
-            "request": {
-              "method": "POST",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"email\": \"user@example.com\",\n  \"username\": \"user123\",\n  \"password\": \"password123\"\n}"
-              },
-              "url": {
-                "raw": "{{base_url}}/signup",
-                "host": ["{{base_url}}"],
-                "path": ["signup"]
-              },
-              "description": "Endpoint to register a new user."
-            },
-            "response": []
-          },
-          {
-            "name": "Verify Email",
-            "request": {
-              "method": "POST",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"signup_token\": \"<signup_token>\",\n  \"entered_code\": \"<verification_code>\"\n}"
-              },
-              "url": {
-                "raw": "{{base_url}}/verify-email",
-                "host": ["{{base_url}}"],
-                "path": ["verify-email"]
-              },
-              "description": "Endpoint to verify the email of a new user."
-            },
-            "response": []
-          },
-          {
-            "name": "Login",
-            "request": {
-              "method": "POST",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"email_username\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
-              },
-              "url": {
-                "raw": "{{base_url}}/login",
-                "host": ["{{base_url}}"],
-                "path": ["login"]
-              },
-              "description": "Endpoint to log in an existing user."
-            },
-            "response": []
-          },
-          {
-            "name": "Forgot Password",
-            "request": {
-              "method": "POST",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"email_username\": \"user@example.com\"\n}"
-              },
-              "url": {
-                "raw": "{{base_url}}/forgot-password",
-                "host": ["{{base_url}}"],
-                "path": ["forgot-password"]
-              },
-              "description": "Endpoint to request a password reset."
-            },
-            "response": []
-          },
-          {
-            "name": "Reset Password",
-            "request": {
-              "method": "POST",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"reset_token\": \"<reset_token>\",\n  \"entered_code\": \"<reset_code>\",\n  \"new_password\": \"new_password123\"\n}"
-              },
-              "url": {
-                "raw": "{{base_url}}/reset-password",
-                "host": ["{{base_url}}"],
-                "path": ["reset-password"]
-              },
-              "description": "Endpoint to reset the password of a user."
-            },
-            "response": []
-          },
-          {
-            "name": "Resend Email Verification Code",
-            "request": {
-              "method": "POST",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"signup_token\": \"<signup_token>\"\n}"
-              },
-              "url": {
-                "raw": "{{base_url}}/resend-code?code_type=email-signup",
-                "host": ["{{base_url}}"],
-                "path": ["resend-code"],
-                "query": [
-                  {
-                    "key": "code_type",
-                    "value": "email-signup"
-                  }
-                ]
-              },
-              "description": "Endpoint to resend the email verification code."
-            },
-            "response": []
-          },
-          {
-            "name": "Logout",
-            "request": {
-              "method": "DELETE",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/logout",
-                "host": ["{{base_url}}"],
-                "path": ["logout"]
-              },
-              "description": "Endpoint to log out a user."
-            },
-            "response": []
-          },
-          {
-            "name": "Delete Account",
-            "request": {
-              "method": "DELETE",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/delete-account",
-                "host": ["{{base_url}}"],
-                "path": ["delete-account"]
-              },
-              "description": "Endpoint to delete a user's account."
-            },
-            "response": []
-          },
-          {
-            "name": "Check Username",
-            "request": {
-              "method": "GET",
-              "header": [],
-              "url": {
-                "raw": "{{base_url}}/check-username?username=user123",
-                "host": ["{{base_url}}"],
-                "path": ["check-username"],
-                "query": [
-                  {
-                    "key": "username",
-                    "value": "user123"
-                  }
-                ]
-              },
-              "description": "Endpoint to check if a username is available."
-            },
-            "response": []
-          },
-          {
-            "name": "Check Email",
-            "request": {
-              "method": "GET",
-              "header": [],
-              "url": {
-                "raw": "{{base_url}}/check-email?email=user@example.com",
-                "host": ["{{base_url}}"],
-                "path": ["check-email"],
-                "query": [
-                  {
-                    "key": "email",
-                    "value": "user@example.com"
-                  }
-                ]
-              },
-              "description": "Endpoint to check if an email is available."
-            },
-            "response": []
-          }
-        ]
-      },
-      {
-        "name": "Profile",
-        "item": [
-          {
-            "name": "Get Profile",
-            "request": {
-              "method": "GET",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/profile",
-                "host": ["{{base_url}}"],
-                "path": ["profile"]
-              },
-              "description": "Endpoint to get user profile information."
-            },
-            "response": []
-          },
-          {
-            "name": "Update Profile",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "body": {
-                "mode": "formdata",
-                "formdata": [
-                  { "key": "user_id", "value": "1", "type": "text" },
-                  { "key": "firstname", "value": "John", "type": "text" },
-                  { "key": "lastname", "value": "Doe", "type": "text" },
-                  { "key": "gender", "value": "male", "type": "text" },
-                  { "key": "birthday", "value": "1990-01-01", "type": "text" },
-                  { "key": "currency_code", "value": "USD", "type": "text" },
-                  { "key": "phone", "value": "1234567890", "type": "text" },
-                  { "key": "profile_picture_id", "value": "", "type": "file" }
-                ]
-              },
-              "url": {
-                "raw": "{{base_url}}/profile/update",
-                "host": ["{{base_url}}"],
-                "path": ["profile", "update"]
-              },
-              "description": "Endpoint to update user profile information."
-            },
-            "response": []
-          },
-          {
-            "name": "Update Next of Kin",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "body": {
-                "mode": "formdata",
-                "formdata": [
-                  { "key": "user_id", "value": "1", "type": "text" },
-                  { "key": "next_of_kin_firstname", "value": "Jane", "type": "text" },
-                  { "key": "next_of_kin_lastname", "value": "Doe", "type": "text" },
-                  { "key": "next_of_kin_relationship", "value": "sister", "type": "text" },
-                  { "key": "next_of_kin_gender", "value": "female", "type": "text" },
-                  { "key": "next_of_kin_phone", "value": "0987654321", "type": "text" },
-                  { "key": "next_of_kin_email", "value": "jane.doe@example.com", "type": "text" },
-                  { "key": "next_of_kin_address", "value": "123 Main St", "type": "text" }
-                ]
-              },
-              "url": {
-                "raw": "{{base_url}}/profile/update-nextofkin",
-                "host": ["{{base_url}}"],
-                "path": ["profile", "update-nextofkin"]
-              },
-              "description": "Endpoint to update user's next of kin information."
-            },
-            "response": []
-          },
-          {
-            "name": "Update Identification",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "body": {
-                "mode": "formdata",
-                "formdata": [
-                  { "key": "user_id", "value": "1", "type": "text" },
-                  { "key": "id_type", "value": "passport", "type": "text" },
-                  { "key": "id_issue_date", "value": "2020-01-01", "type": "text" },
-                  { "key": "id_expiration_date", "value": "2030-01-01", "type": "text" },
-                  { "key": "id_picture", "value": "", "type": "file" }
-                ]
-              },
-              "url": {
-                "raw": "{{base_url}}/profile/update-identification",
-                "host": ["{{base_url}}"],
-                "path": ["profile", "update-identification"]
-              },
-              "description": "Endpoint to update user's identification information."
-            },
-            "response": []
-          },
-          {
-            "name": "Update Address",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "body": {
-                "mode": "formdata",
-                "formdata": [
-                  { "key": "user_id", "value": "1", "type": "text" },
-                  { "key": "country", "value": "USA", "type": "text" },
-                  { "key": "state", "value": "California", "type": "text" },
-                  { "key": "address", "value": "123 Main St", "type": "text" },
-                  { "key": "city", "value": "Los Angeles", "type": "text" },
-                  { "key": "postal_code", "value": "90001", "type": "text" }
-                ]
-              },
-              "url": {
-                "raw": "{{base_url}}/profile/update-address",
-                "host": ["{{base_url}}"],
-                "path": ["profile", "update-address"]
-              },
-              "description": "Endpoint to update user's address information."
-            },
-            "response": []
-          },
-          {
-            "name": "Get Profile Picture",
-            "request": {
-              "method": "GET",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/profile-pic",
-                "host": ["{{base_url}}"],
-                "path": ["profile-pic"]
-              },
-              "description": "Endpoint to get user's profile picture."
-            },
-            "response": []
-          },
-          {
-            "name": "Update Profile Picture",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "body": {
-                "mode": "formdata",
-                "formdata": [
-                  { "key": "profile_picture", "value": "", "type": "file" }
-                ]
-              },
-              "url": {
-                "raw": "{{base_url}}/profile-pic/edit",
-                "host": ["{{base_url}}"],
-                "path": ["profile-pic", "edit"]
-              },
-              "description": "Endpoint to update user's profile picture."
-            },
-            "response": []
-          },
-          {
-            "name": "Edit Email",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"new_email\": \"newemail@example.com\"\n}"
-              },
-              "url": {
-                "raw": "{{base_url}}/profile/email-edit",
-                "host": ["{{base_url}}"],
-                "path": ["profile", "email-edit"]
-              },
-              "description": "Endpoint to edit user's email address."
-            },
-            "response": []
-          },
-          {
-            "name": "Verify Edited Email",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"edit_email_token\": \"<edit_email_token>\",\n  \"entered_code\": \"<verification_code>\"\n}"
-              },
-              "url": {
-                "raw": "{{base_url}}/profile/email-verify",
-                "host": ["{{base_url}}"],
-                "path": ["profile", "email-verify"]
-              },
-              "description": "Endpoint to verify the edited email address."
-            },
-            "response": []
-          }
-        ]
-      },
-      {
-        "name": "Assets",
-        "item": [
-          {
-            "name": "Add Stock",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"symbol\": \"AAPL\",\n  \"quantity\": 10\n}"
-              },
-              "url": {
-                "raw": "{{base_url}}/users/stocks",
-                "host": ["{{base_url}}"],
-                "path": ["users", "stocks"]
-              },
-              "description": "Endpoint to add a stock."
-            },
-            "response": []
-          },
-          {
-            "name": "Get Stocks",
-            "request": {
-              "method": "GET",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/users/stocks",
-                "host": ["{{base_url}}"],
-                "path": ["users", "stocks"]
-              },
-              "description": "Endpoint to get stocks."
-            },
-            "response": []
-          },
-          {
-            "name": "Add Real Estate",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"address\": \"123 Main St\",\n  \"value\": 250000\n}"
-              },
-              "url": {
-                "raw": "{{base_url}}/users/real_estates",
-                "host": ["{{base_url}}"],
-                "path": ["users", "real_estates"]
-              },
-              "description": "Endpoint to add a real estate."
-            },
-            "response": []
-          },
-          {
-            "name": "Get Real Estates",
-            "request": {
-              "method": "GET",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/users/real_estates",
-                "host": ["{{base_url}}"],
-                "path": ["users", "real_estates"]
-              },
-              "description": "Endpoint to get real estates."
-            },
-            "response": []
-          },
-          {
-            "name": "Add Business",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"name\": \"My Business\",\n  \"description\": \"A description of my business\"\n}"
-              },
-              "url": {
-                "raw": "{{base_url}}/users/businesses",
-                "host": ["{{base_url}}"],
-                "path": ["users", "businesses"]
-              },
-              "description": "Endpoint to add a business."
-            },
-            "response": []
-          },
-          {
-            "name": "Get Businesses",
-            "request": {
-              "method": "GET",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/users/businesses",
-                "host": ["{{base_url}}"],
-                "path": ["users", "businesses"]
-              },
-              "description": "Endpoint to get businesses."
-            },
-            "response": []
-          },
-          {
-            "name": "Add Crypto",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"symbol\": \"BTC\",\n  \"amount\": 0.5\n}"
-              },
-              "url": {
-                "raw": "{{base_url}}/users/cryptos",
-                "host": ["{{base_url}}"],
-                "path": ["users", "cryptos"]
-              },
-              "description": "Endpoint to add a cryptocurrency."
-            },
-            "response": []
-          },
-          {
-            "name": "Get Cryptos",
-            "request": {
-              "method": "GET",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/users/cryptos",
-                "host": ["{{base_url}}"],
-                "path": ["users", "cryptos"]
-              },
-              "description": "Endpoint to get cryptocurrencies."
-            },
-            "response": []
-          },
-          {
-            "name": "Add NFT",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"name\": \"My NFT\",\n  \"uri\": \"https://example.com/nft\"\n}"
-              },
-              "url": {
-                "raw": "{{base_url}}/users/nfts",
-                "host": ["{{base_url}}"],
-                "path": ["users", "nfts"]
-              },
-              "description": "Endpoint to add an NFT."
-            },
-            "response": []
-          },
-          {
-            "name": "Get NFTs",
-            "request": {
-              "method": "GET",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/users/nfts",
-                "host": ["{{base_url}}"],
-                "path": ["users", "nfts"]
-              },
-              "description": "Endpoint to get NFTs."
-            },
-            "response": []
-          },
-          {
-            "name": "Add Social Media",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"platform\": \"Twitter\",\n  \"username\": \"user123\",\n  \"password\": \"password123\",\n  \"description\": \"Personal Twitter account\"\n}"
-              },
-              "url": {
-                "raw": "{{base_url}}/users/social_media",
-                "host": ["{{base_url}}"],
-                "path": ["users", "social_media"]
-              },
-              "description": "Endpoint to add a social media account."
-            },
-            "response": []
-          },
-          {
-            "name": "Get Social Media",
-            "request": {
-              "method": "GET",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/users/social_media",
-                "host": ["{{base_url}}"],
-                "path": ["users", "social_media"]
-              },
-              "description": "Endpoint to get social media accounts."
-            },
-            "response": []
-          },
-          {
-            "name": "Get All Assets",
-            "request": {
-              "method": "GET",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "Bearer <access_token>",
-                  "type": "json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/users/assets",
-                "host": ["{{base_url}}"],
-                "path": ["users", "assets"]
-              },
-              "description": "Endpoint to get all assets."
-            },
-            "response": []
-          }
-        ]
-      }
-    ]
-  }
-  
+	"info": {
+		"_postman_id": "996606f9-bd34-47a3-877c-e5fcd1f240ad",
+		"name": "Vasset Global API",
+		"description": "This collection defines the API endpoints for the Vasset Global Flask application.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32077298"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\",\n  \"username\": \"user123\",\n  \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/signup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"signup"
+							]
+						},
+						"description": "Endpoint to register a new user."
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"signup_token\": \"<signup_token>\",\n  \"entered_code\": \"<verification_code>\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/verify-email",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"verify-email"
+							]
+						},
+						"description": "Endpoint to verify the email of a new user."
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email_username\": \"user@example.com\",\n  \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						},
+						"description": "Endpoint to log in an existing user."
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email_username\": \"user@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/forgot-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"forgot-password"
+							]
+						},
+						"description": "Endpoint to request a password reset."
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reset_token\": \"<reset_token>\",\n  \"entered_code\": \"<reset_code>\",\n  \"new_password\": \"new_password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/reset-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reset-password"
+							]
+						},
+						"description": "Endpoint to reset the password of a user."
+					},
+					"response": []
+				},
+				{
+					"name": "Resend Email Verification Code",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"signup_token\": \"<signup_token>\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/resend-code?code_type=email-signup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resend-code"
+							],
+							"query": [
+								{
+									"key": "code_type",
+									"value": "email-signup"
+								}
+							]
+						},
+						"description": "Endpoint to resend the email verification code."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"logout"
+							]
+						},
+						"description": "Endpoint to log out a user."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Account",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/delete-account",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"delete-account"
+							]
+						},
+						"description": "Endpoint to delete a user's account."
+					},
+					"response": []
+				},
+				{
+					"name": "Check Username",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/check-username?username=user123",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"check-username"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "user123"
+								}
+							]
+						},
+						"description": "Endpoint to check if a username is available."
+					},
+					"response": []
+				},
+				{
+					"name": "Check Email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/check-email?email=user@example.com",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"check-email"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "user@example.com"
+								}
+							]
+						},
+						"description": "Endpoint to check if an email is available."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"profile"
+							]
+						},
+						"description": "Endpoint to get user profile information."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "firstname",
+									"value": "John",
+									"type": "text"
+								},
+								{
+									"key": "lastname",
+									"value": "Doe",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "male",
+									"type": "text"
+								},
+								{
+									"key": "birthday",
+									"value": "1990-01-01",
+									"type": "text"
+								},
+								{
+									"key": "currency_code",
+									"value": "USD",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "1234567890",
+									"type": "text"
+								},
+								{
+									"key": "profile_picture_id",
+									"value": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/profile/update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"profile",
+								"update"
+							]
+						},
+						"description": "Endpoint to update user profile information."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Next of Kin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "next_of_kin_firstname",
+									"value": "Jane",
+									"type": "text"
+								},
+								{
+									"key": "next_of_kin_lastname",
+									"value": "Doe",
+									"type": "text"
+								},
+								{
+									"key": "next_of_kin_relationship",
+									"value": "sister",
+									"type": "text"
+								},
+								{
+									"key": "next_of_kin_gender",
+									"value": "female",
+									"type": "text"
+								},
+								{
+									"key": "next_of_kin_phone",
+									"value": "0987654321",
+									"type": "text"
+								},
+								{
+									"key": "next_of_kin_email",
+									"value": "jane.doe@example.com",
+									"type": "text"
+								},
+								{
+									"key": "next_of_kin_address",
+									"value": "123 Main St",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/profile/update-nextofkin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"profile",
+								"update-nextofkin"
+							]
+						},
+						"description": "Endpoint to update user's next of kin information."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Identification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "id_type",
+									"value": "passport",
+									"type": "text"
+								},
+								{
+									"key": "id_issue_date",
+									"value": "2020-01-01",
+									"type": "text"
+								},
+								{
+									"key": "id_expiration_date",
+									"value": "2030-01-01",
+									"type": "text"
+								},
+								{
+									"key": "id_picture",
+									"value": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/profile/update-identification",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"profile",
+								"update-identification"
+							]
+						},
+						"description": "Endpoint to update user's identification information."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Address",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "country",
+									"value": "USA",
+									"type": "text"
+								},
+								{
+									"key": "state",
+									"value": "California",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "123 Main St",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "Los Angeles",
+									"type": "text"
+								},
+								{
+									"key": "postal_code",
+									"value": "90001",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/profile/update-address",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"profile",
+								"update-address"
+							]
+						},
+						"description": "Endpoint to update user's address information."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile Picture",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/profile-pic",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"profile-pic"
+							]
+						},
+						"description": "Endpoint to get user's profile picture."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile Picture",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profile_picture",
+									"value": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/profile-pic/edit",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"profile-pic",
+								"edit"
+							]
+						},
+						"description": "Endpoint to update user's profile picture."
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"new_email\": \"newemail@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/profile/email-edit",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"profile",
+								"email-edit"
+							]
+						},
+						"description": "Endpoint to edit user's email address."
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Edited Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"edit_email_token\": \"<edit_email_token>\",\n  \"entered_code\": \"<verification_code>\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/profile/email-verify",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"profile",
+								"email-verify"
+							]
+						},
+						"description": "Endpoint to verify the edited email address."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Assets",
+			"item": [
+				{
+					"name": "Add Stock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"symbol\": \"AAPL\",\n  \"quantity\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/stocks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"stocks"
+							]
+						},
+						"description": "Endpoint to add a stock."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Stocks",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/stocks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"stocks"
+							]
+						},
+						"description": "Endpoint to get stocks."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Real Estate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"address\": \"123 Main St\",\n  \"value\": 250000\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/real_estates",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"real_estates"
+							]
+						},
+						"description": "Endpoint to add a real estate."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Real Estates",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/real_estates",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"real_estates"
+							]
+						},
+						"description": "Endpoint to get real estates."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Business",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"My Business\",\n  \"description\": \"A description of my business\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/businesses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"businesses"
+							]
+						},
+						"description": "Endpoint to add a business."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Businesses",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/businesses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"businesses"
+							]
+						},
+						"description": "Endpoint to get businesses."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Crypto",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"symbol\": \"BTC\",\n  \"amount\": 0.5\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/cryptos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"cryptos"
+							]
+						},
+						"description": "Endpoint to add a cryptocurrency."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cryptos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/cryptos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"cryptos"
+							]
+						},
+						"description": "Endpoint to get cryptocurrencies."
+					},
+					"response": []
+				},
+				{
+					"name": "Add NFT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"My NFT\",\n  \"uri\": \"https://example.com/nft\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/nfts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"nfts"
+							]
+						},
+						"description": "Endpoint to add an NFT."
+					},
+					"response": []
+				},
+				{
+					"name": "Get NFTs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/nfts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"nfts"
+							]
+						},
+						"description": "Endpoint to get NFTs."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Social Media",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"platform\": \"Twitter\",\n  \"username\": \"user123\",\n  \"password\": \"password123\",\n  \"description\": \"Personal Twitter account\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/social_media",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"social_media"
+							]
+						},
+						"description": "Endpoint to add a social media account."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Social Media",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/social_media",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"social_media"
+							]
+						},
+						"description": "Endpoint to get social media accounts."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Assets",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/assets",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"assets"
+							]
+						},
+						"description": "Endpoint to get all assets."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://api.vassetglobal.com/api",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzc1NzkyMCwianRpIjoiODdhNzA0MTEtYmQ0NC00ZDJlLWE4YTgtMTc3MmUyOGMxYTE4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTMsIm5iZiI6MTcxNzc1NzkyMCwiY3NyZiI6IjFhYWVmZGMxLThmNzktNGQ0Mi04NTM1LTZiY2M5MGY1MWE2MSIsImV4cCI6MTcxNzg0NDMyMH0.iCUiKMY7u1pOaYyLO0mSsNglGQhx5eFFHzlhkruKg5k",
+			"type": "string"
+		}
+	]
+}
