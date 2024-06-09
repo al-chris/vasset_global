@@ -1199,6 +1199,173 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "transactions",
+			"item": [
+				{
+					"name": "make transaction",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\": \"\",\r\n    \"wallet_address\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/payment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload screenshot",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "screenshot",
+									"type": "file",
+									"src": "postman-cloud:///1eec39b7-41fc-4390-b32c-90d724a5baca"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/payment/screenshot/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payment",
+								"screenshot",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/payment/verify/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payment",
+								"verify",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancel payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/payment/cancel/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payment",
+								"cancel",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user transactions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/user/1/transactions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"1",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [

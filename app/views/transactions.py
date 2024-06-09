@@ -61,7 +61,7 @@ class TransactionController:
         data = request.json
         # user_id = data.get('user_id', 0)
         user_id = get_jwt_identity()
-        amount = data.get('amount')
+        amount = int(data.get('amount'))
         wallet_address = data.get('wallet_address')
         
         user = User.query.get(user_id)
