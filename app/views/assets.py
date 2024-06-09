@@ -1,5 +1,5 @@
 '''
-This module defines the controller methods for authentication operations in the Trendit³ Flask application.
+This module defines the controller methods for authentication operations in the Vasset Global Flask application.
 
 It includes methods for checking username, checking email, signing up, resending email verification code, and logging in.
 

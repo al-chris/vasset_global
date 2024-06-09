@@ -13,3 +13,4 @@ from .user import User, TempUser, Address, Profile, Identification, Identificati
 from .settings import TwoFactorMethod, SecuritySetting, UserSettings
 from .role import Role, RoleNames
 from .assets import Stock, RealEstate, Business, Crypto, NFT, SocialMedia
+from .transactions import Transactions

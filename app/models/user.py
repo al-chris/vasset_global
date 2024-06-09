@@ -43,6 +43,7 @@ class User(db.Model):
     phone_verified = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
+    balance = db.Column(db.Float, default=0.0)
 
     # Relationships
     profile = db.relationship('Profile', back_populates="vasset_user", uselist=False, cascade="all, delete-orphan")
@@ -51,6 +52,7 @@ class User(db.Model):
     roles = db.relationship('Role', secondary='user_roles', backref=db.backref('users', lazy='dynamic'), cascade="all, delete-orphan", single_parent=True)
     nextofkin = db.relationship('NextOfKin', back_populates="vasset_user", uselist=False, cascade="all, delete-orphan")
     otp_token = db.relationship('OneTimeToken', back_populates="vasset_user", uselist=False, cascade="all, delete-orphan")
+    transactions = db.relationship('Transactions', backref='user', lazy=True)
     user_settings = db.relationship('UserSettings', back_populates='vasset_user', uselist=False, cascade='all, delete-orphan')
 
     # Asset relationships

@@ -13,7 +13,7 @@ from flask import Blueprint, render_template
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
-from . import auth, profile, assets, crypto_logo
+from . import auth, profile, assets, crypto_logo, transactions
 
 @api.route("/", methods=['GET'])
 def index():
