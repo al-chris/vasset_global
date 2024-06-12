@@ -37,7 +37,7 @@ class AssetsController:
         data = request.get_json()
         try:
             symbol = data.get('symbol')
-            quantity = data.get('quantity')
+            quantity = int(data.get('quantity'))
             new_stock = Stock(symbol=symbol, quantity=quantity, user_id=user_id)
             db.session.add(new_stock)
             db.session.commit()
@@ -73,7 +73,7 @@ class AssetsController:
         data = request.get_json()
         try:
             address = data.get('address')
-            value = data.get('value')
+            value = float(data.get('value'))
             new_real_estate = RealEstate(address=address, value=value, user_id=user_id)
             db.session.add(new_real_estate)
             db.session.commit()
@@ -144,7 +144,7 @@ class AssetsController:
         user_id = get_jwt_identity()
         data = request.get_json()
         try:
-            new_crypto = Crypto(symbol=data['symbol'], amount=data['amount'], user_id=user_id)
+            new_crypto = Crypto(symbol=data['symbol'], amount=int(data['amount']), user_id=user_id)
             db.session.add(new_crypto)
             db.session.commit()
             return success_response('Crypto added successfully', 201)
