@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"user@example.com\",\n  \"username\": \"user123\",\n  \"password\": \"password123\"\n}",
+							"raw": "{\n  \"email\": \"user@example.com\",\n  \"username\": \"user123\",\n  \"password\": \"password123\",\n  \"firstname\": \"new\",\n  \"lastname\": \"user\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -727,6 +727,83 @@
 					"response": []
 				},
 				{
+					"name": "Add Youtube",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@email.com\",\n  \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/youtube",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"youtube"
+							]
+						},
+						"description": "Endpoint to add a stock."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Youtube",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <access_token>"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/youtube",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"youtube"
+							]
+						},
+						"description": "Endpoint to get stocks."
+					},
+					"response": []
+				},
+				{
 					"name": "Add Real Estate",
 					"request": {
 						"auth": {
@@ -892,7 +969,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"symbol\": \"BTC\",\n  \"amount\": 0.5\n}"
+							"raw": "{\n  \"symbol\": \"BTC\",\n  \"amount\": 0.5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{base_url}}/users/cryptos",
@@ -1220,7 +1302,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"amount\": \"\",\r\n    \"wallet_address\": \"\"\r\n}",
+							"raw": "{\r\n    \"amount\": 5,\r\n    \"wallet_address\": \"sljsknflkasnlf\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1398,7 +1480,7 @@
 		},
 		{
 			"key": "access_token",
-			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzc1NzkyMCwianRpIjoiODdhNzA0MTEtYmQ0NC00ZDJlLWE4YTgtMTc3MmUyOGMxYTE4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTMsIm5iZiI6MTcxNzc1NzkyMCwiY3NyZiI6IjFhYWVmZGMxLThmNzktNGQ0Mi04NTM1LTZiY2M5MGY1MWE2MSIsImV4cCI6MTcxNzg0NDMyMH0.iCUiKMY7u1pOaYyLO0mSsNglGQhx5eFFHzlhkruKg5k",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzk4MjI4MSwianRpIjoiYzU4NmNjOWMtNDg3NC00MGE5LWJiNjUtMGNmN2M1NDkxNTlhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTMsIm5iZiI6MTcxNzk4MjI4MSwiY3NyZiI6ImUwODMyYmU2LTcwYTItNGI3My1iNDNlLTBmNzA2YjJkZjA3OCIsImV4cCI6MTcxODA2ODY4MX0.BpIYtbUdYFf41PUQBLQByPo44ISC0H9kRWv_sCfVqGg",
 			"type": "string"
 		}
 	]

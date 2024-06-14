@@ -87,6 +87,17 @@ def add_social_media():
 def get_social_media():
     return AssetsController.get_social_media()
 
+# Youtube endpoints
+@api.route('/users/youtube', methods=['POST'])
+@jwt_required()
+def add_youtube():
+    return AssetsController.add_youtube()
+
+@api.route('/users/youtube', methods=['GET'])
+@jwt_required()
+def get_youtube():
+    return AssetsController.get_youtube()
+
 # Get all assets
 @api.route('/users/assets', methods=['GET'])
 @jwt_required()

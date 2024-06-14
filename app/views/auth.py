@@ -40,6 +40,8 @@ class AuthController:
             email = data.get('email', '')
             username = data.get('username', '')
             password = data.get('password', '')
+            firstname = data.get('firstname', '')
+            lastname = data.get('lastname', '')
 
             if User.query.filter_by(username=username).first():
                 return error_response('Username already taken', 409)
@@ -57,7 +59,7 @@ class AuthController:
 
             new_user.password = password
             
-            new_user_profile = Profile(vasset_user=new_user)
+            new_user_profile = Profile(vasset_user=new_user, firstname=firstname, lastname=lastname)
 
             # if isinstance(profile_picture, FileStorage) and profile_picture.filename != '':
             #     try:

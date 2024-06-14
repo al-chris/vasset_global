@@ -182,3 +182,34 @@ class SocialMedia(db.Model):
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
+
+class Youtube(db.Model):
+    __tablename__ = 'youtube'
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(64))
+    channel_id = db.Column(db.String(100))
+    description = db.Column(db.String(1500))
+    created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
+    user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id'), nullable=False)
+
+    def __repr__(self):
+        return f'<id: {self.id}, email: {self.email}, description: {self.description}>'
+    
+    
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        db.session.commit()
+    
+    def to_json(self):
+        return {
+            'id': self.id,
+            'email': self.email,
+            'password': self.password,
+            'channel_id': self.channel_id,
+            'description': self.description,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }

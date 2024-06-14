@@ -21,7 +21,7 @@ from jwt import ExpiredSignatureError, DecodeError
 import pyotp
 
 from app.extensions import db
-from app.models import User, Stock, RealEstate, Business, Crypto, NFT, SocialMedia
+from app.models import User, Stock, RealEstate, Business, Crypto, NFT, SocialMedia, Youtube
 from app.utils.helpers.auth_helpers import generate_six_digit_code, save_pwd_reset_token, send_2fa_code
 from app.utils.helpers.email_helpers import send_code_to_email, send_other_emails
 from app.utils.helpers.basic_helpers import log_exception, console_log
@@ -257,6 +257,47 @@ class AssetsController:
             return error_response('Database error', 500, str(e.orig))
         except Exception as e:
             return error_response('An unexpected error occurred', 500, str(e))
+        
+    
+    @staticmethod
+    def add_youtube():
+        user_id = get_jwt_identity()
+        data = request.get_json()
+        try:
+            channel_id = data.get('channel_id')
+            email = data.get('email')
+            password = data.get('password')
+            new_youtube = Youtube(email=email, password=password, user_id=user_id)
+            db.session.add(new_youtube)
+            db.session.commit()
+            return success_response('Youtube channel added successfully', 201)
+        
+        except Exception as e:
+            db.session.rollback()
+            return error_response(str(e), 400)
+
+
+    @staticmethod
+    def get_youtube():
+        try:
+            user_id = get_jwt_identity()
+            if not user_id:
+                return error_response('User identity not found', 401)
+
+            youtube = Youtube.query.filter_by(user_id=user_id).all()
+            youtube_list = [{'id': yt.id, 'email': yt.email, 'password': yt.password} for yt in youtube]
+            return success_response(youtube_list if youtube_list else [], 200)
+        except IntegrityError as e:
+            return error_response('Integrity error', 400, str(e.orig))
+        except DataError as e:
+            return error_response('Data error', 400, str(e.orig))
+        except InvalidRequestError as e:
+            return error_response('Invalid request', 400, str(e.orig))
+        except DatabaseError as e:
+            return error_response('Database error', 500, str(e.orig))
+        except Exception as e:
+            return error_response('An unexpected error occurred', 500, str(e))
+        
 
     @staticmethod
     def get_all_assets():
