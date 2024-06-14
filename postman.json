@@ -260,6 +260,16 @@
 				{
 					"name": "Get Profile",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -283,6 +293,16 @@
 				{
 					"name": "Update Profile",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -352,6 +372,16 @@
 				{
 					"name": "Update Next of Kin",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -421,6 +451,16 @@
 				{
 					"name": "Update Identification",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -475,6 +515,16 @@
 				{
 					"name": "Update Address",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -534,6 +584,16 @@
 				{
 					"name": "Get Profile Picture",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -557,6 +617,16 @@
 				{
 					"name": "Update Profile Picture",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -591,6 +661,16 @@
 				{
 					"name": "Edit Email",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -619,6 +699,16 @@
 				{
 					"name": "Verify Edited Email",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -1480,7 +1570,7 @@
 		},
 		{
 			"key": "access_token",
-			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzk4MjI4MSwianRpIjoiYzU4NmNjOWMtNDg3NC00MGE5LWJiNjUtMGNmN2M1NDkxNTlhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTMsIm5iZiI6MTcxNzk4MjI4MSwiY3NyZiI6ImUwODMyYmU2LTcwYTItNGI3My1iNDNlLTBmNzA2YjJkZjA3OCIsImV4cCI6MTcxODA2ODY4MX0.BpIYtbUdYFf41PUQBLQByPo44ISC0H9kRWv_sCfVqGg",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxODM5MjA4NSwianRpIjoiMDBlNGE1ZDItYTE5NC00MTg3LWEyMzgtZjhmNzU3MDI4NmEyIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTMsIm5iZiI6MTcxODM5MjA4NSwiY3NyZiI6IjRiZTU4NmFmLTMzMGUtNDhhNC1iMTk0LWE5N2YyN2JiOGEwZiIsImV4cCI6MTcxODQ3ODQ4NX0.fbjsFmyL-piHl46vqVmyUeFTigk6sKe0HUyHwZ7mIFw",
 			"type": "string"
 		}
 	]
