@@ -454,6 +454,7 @@ class AuthController:
     @staticmethod
     def delete_account():
         try:
+            print("started")
             current_user_id = get_jwt_identity()
             
             if current_user_id is None:

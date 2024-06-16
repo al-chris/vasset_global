@@ -17,7 +17,7 @@ class Stock(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
-    user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id', ondelete='CASCADE'), nullable=False)
 
     def __repr__(self):
         return f'<symbol: {self.symbol}, quantity: {self.quantity}>'
@@ -44,7 +44,7 @@ class RealEstate(db.Model):
     value = db.Column(db.Float, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
-    user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id', ondelete='CASCADE'), nullable=False)
 
     def __repr__(self):
         return f'<id: {self.id}, address: {self.address}, value: {self.value}>'
@@ -70,7 +70,7 @@ class Business(db.Model):
     description = db.Column(db.String(1500))
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
-    user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id', ondelete='CASCADE'), nullable=False)
 
     def __repr__(self):
         return f'<id: {self.id}, name: {self.name}, description: {self.description}>'
@@ -97,7 +97,7 @@ class Crypto(db.Model):
     img = db.Column(db.String(200))
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
-    user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id', ondelete='CASCADE'), nullable=False)
 
     def __repr__(self):
         return f'<symbol: {self.symbol}, amount: {self.amount}>'
@@ -123,7 +123,7 @@ class NFT(db.Model):
     uri = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
-    user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id', ondelete='CASCADE'), nullable=False)
 
     def __repr__(self):
         return f'<id: {self.id}, name: {self.name}, uri: {self.uri}>'
@@ -152,7 +152,7 @@ class SocialMedia(db.Model):
     proof_pic_id = db.Column(db.Integer(), db.ForeignKey('media.id'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
-    user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id', ondelete='CASCADE'), nullable=False)
 
     def __repr__(self):
         return f'<id: {self.id}, platform: {self.platform}, username: {self.username}, description: {self.description}>'
@@ -193,7 +193,7 @@ class Youtube(db.Model):
     description = db.Column(db.String(1500))
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
-    user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id', ondelete='CASCADE'), nullable=False)
 
     def __repr__(self):
         return f'<id: {self.id}, email: {self.email}, description: {self.description}>'

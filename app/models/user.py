@@ -56,11 +56,11 @@ class User(db.Model):
     user_settings = db.relationship('UserSettings', back_populates='vasset_user', uselist=False, cascade='all, delete-orphan')
 
     # Asset relationships
-    stocks = db.relationship('Stock', backref='owner', lazy=True)
-    real_estates = db.relationship('RealEstate', backref='owner', lazy=True)
-    businesses = db.relationship('Business', backref='owner', lazy=True)
-    cryptos = db.relationship('Crypto', backref='owner', lazy=True)
-    nfts = db.relationship('NFT', backref='owner', lazy=True)
+    stocks = db.relationship('Stock', backref='owner', lazy=True, cascade="all, delete, delete-orphan")
+    real_estates = db.relationship('RealEstate', backref='owner', lazy=True, cascade="all, delete, delete-orphan")
+    businesses = db.relationship('Business', backref='owner', lazy=True, cascade="all, delete, delete-orphan")
+    cryptos = db.relationship('Crypto', backref='owner', lazy=True, cascade="all, delete, delete-orphan")
+    nfts = db.relationship('NFT', backref='owner', lazy=True, cascade="all, delete, delete-orphan")
 
     @property
     def password(self):
