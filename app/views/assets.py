@@ -20,6 +20,16 @@ from flask_jwt_extended.exceptions import JWTDecodeError
 from jwt import ExpiredSignatureError, DecodeError
 import pyotp
 
+import cloudinary
+import cloudinary.uploader
+from config import Config
+
+cloudinary.config( 
+    cloud_name = Config.CLOUDINARY_CLOUD_NAME, 
+    api_key = Config.CLOUDINARY_API_KEY, 
+    api_secret = Config.CLOUDINARY_API_SECRET 
+)
+
 from app.extensions import db
 from app.models import User, Stock, RealEstate, Business, Crypto, NFT, SocialMedia, Youtube
 from app.utils.helpers.auth_helpers import generate_six_digit_code, save_pwd_reset_token, send_2fa_code
@@ -143,9 +153,15 @@ class AssetsController:
     def add_crypto():
         user_id = get_jwt_identity()
         data = request.get_json()
+        symbol = data['symbol']
+        amount = int(data['amount'])
+        file = request.files['screenshot']
         try:
-            new_crypto = Crypto(symbol=data['symbol'], amount=int(data['amount']), user_id=user_id)
+            new_crypto = Crypto(symbol=symbol, amount=amount, user_id=user_id)
             db.session.add(new_crypto)
+            if file:
+                result = cloudinary.uploader.upload(file)
+                new_crypto.img = result['secure_url']
             db.session.commit()
             return success_response('Crypto added successfully', 201)
         except Exception as e:
@@ -160,7 +176,7 @@ class AssetsController:
                 return error_response('User identity not found', 401)
 
             cryptos = Crypto.query.filter_by(user_id=user_id).all()
-            cryptos_list = [{'id': crypto.id, 'symbol': crypto.symbol, 'amount': crypto.amount} for crypto in cryptos]
+            cryptos_list = [{'id': crypto.id, 'symbol': crypto.symbol, 'amount': crypto.amount, 'img': crypto.img} for crypto in cryptos]
             return success_response(cryptos_list if cryptos_list else [], 200)
         except IntegrityError as e:
             return error_response('Integrity error', 400, str(e.orig))
@@ -312,6 +328,7 @@ class AssetsController:
             cryptos = Crypto.query.filter_by(user_id=user_id).all()
             nfts = NFT.query.filter_by(user_id=user_id).all()
             socialmedia = SocialMedia.query.filter_by(user_id=user_id).all()
+            youtube = Youtube.query.filter_by(user_id=user_id).all()
 
             assets = {
                 'stocks': [{'id': stock.id, 'symbol': stock.symbol, 'quantity': stock.quantity} for stock in stocks],
@@ -319,7 +336,8 @@ class AssetsController:
                 'businesses': [{'id': business.id, 'name': business.name, 'description': business.description} for business in businesses],
                 'cryptos': [{'id': crypto.id, 'symbol': crypto.symbol, 'amount': crypto.amount} for crypto in cryptos],
                 'nfts': [{'id': nft.id, 'name': nft.name, 'uri': nft.uri} for nft in nfts],
-                'social_media': [{'id': social.id, 'platform': social.platform, 'username': social.username} for social in socialmedia]
+                'social_media': [{'id': social.id, 'platform': social.platform, 'username': social.username} for social in socialmedia],
+                'youtube': [{'id': yt.id, 'email': yt.email, 'password': yt.password} for yt in youtube]
             }
             return success_response(assets, 200)
         except IntegrityError as e:

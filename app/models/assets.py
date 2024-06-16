@@ -94,6 +94,7 @@ class Crypto(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     symbol = db.Column(db.String(10), nullable=False)
     amount = db.Column(db.Float, nullable=False)
+    img = db.Column(db.String(200))
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
     user_id = db.Column(db.Integer, db.ForeignKey('vasset_user.id'), nullable=False)
