@@ -481,6 +481,7 @@ class AuthController:
         except Exception as e:
             db.session.rollback()
             logging.exception(f"An exception occurred processing request: {e}")
+            console_log("Exception", e)
             api_response = error_response('An unexpected error occurred while processing the request.', 500)
         finally:
             db.session.close()
