@@ -152,7 +152,7 @@ class AssetsController:
     @staticmethod
     def add_crypto():
         user_id = get_jwt_identity()
-        data = request.get_json()
+        data = request.form.to_dict()
         symbol = data['symbol']
         amount = int(data['amount'])
         file = request.files['screenshot']
