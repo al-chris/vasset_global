@@ -154,7 +154,7 @@ class AssetsController:
         user_id = get_jwt_identity()
         data = request.form.to_dict()
         symbol = data['symbol']
-        amount = int(data['amount'])
+        amount = float(data['amount'])
         file = request.files['screenshot']
         try:
             new_crypto = Crypto(symbol=symbol, amount=amount, user_id=user_id)
