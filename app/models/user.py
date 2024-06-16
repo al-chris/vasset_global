@@ -52,7 +52,6 @@ class User(db.Model):
     roles = db.relationship('Role', secondary='user_roles', backref=db.backref('users', lazy='dynamic'), cascade="all, delete-orphan", single_parent=True)
     nextofkin = db.relationship('NextOfKin', back_populates="vasset_user", uselist=False, cascade="all, delete-orphan")
     otp_token = db.relationship('OneTimeToken', back_populates="vasset_user", uselist=False, cascade="all, delete-orphan")
-    transactions = db.relationship('Transactions', backref='user', lazy=True)
     user_settings = db.relationship('UserSettings', back_populates='vasset_user', uselist=False, cascade='all, delete-orphan')
 
     # Asset relationships
@@ -61,6 +60,7 @@ class User(db.Model):
     businesses = db.relationship('Business', backref='owner', lazy=True, cascade="all, delete, delete-orphan")
     cryptos = db.relationship('Crypto', backref='owner', lazy=True, cascade="all, delete, delete-orphan")
     nfts = db.relationship('NFT', backref='owner', lazy=True, cascade="all, delete, delete-orphan")
+    transactions = db.relationship('Transactions', backref='user', lazy=True, cascade="all, delete, delete-orphan")
 
     @property
     def password(self):
