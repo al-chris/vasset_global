@@ -78,3 +78,9 @@ def user_email_edit():
 @jwt_required()
 def verify_email_edit():
     return ProfileController.verify_email_edit()
+
+
+@api.route('/profile/balance', methods=['GET'])
+@jwt_required()
+def get_user_balance():
+    return ProfileController.get_user_balance()

@@ -418,3 +418,20 @@ class ProfileController:
         
         return api_response
 
+    @staticmethod
+    def get_user_balance():
+        try:
+            current_user_id = get_jwt_identity()
+            current_user = User.query.filter(User.id == current_user_id).first()
+            
+            if not current_user:
+                return error_response("user not found", 404)
+            
+            balance = current_user.balance
+            extra_data = {'balance': balance}
+            api_response = success_response('User balance fetched successfully', 200, extra_data)
+        except Exception as e:
+            log_exception('An error occurred fetching user balance', e)
+            api_response = error_response('An error occurred fetching user balance', 500)
+        
+        return api_response
