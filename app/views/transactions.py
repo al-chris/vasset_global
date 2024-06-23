@@ -204,6 +204,8 @@ class TransactionController:
                 'id': t.id,
                 'amount': t.amount,
                 'wallet_address': t.wallet_address,
+                'wallet_type': t.wallet_type,
+                'coin_type': t.coin_type,
                 'screenshot_url': t.screenshot_url,
                 'status': t.status
             } for t in transactions]
