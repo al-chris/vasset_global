@@ -61,7 +61,7 @@ class TransactionController:
         data = request.json
         # user_id = data.get('user_id', 0)
         user_id = get_jwt_identity()
-        amount = int(data.get('amount'))
+        amount = float(data.get('amount'))
         wallet_address = data.get('wallet_address')
         wallet_type = data.get('wallet_type')
         coin_type = data.get('coin_type')
