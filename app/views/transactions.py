@@ -129,7 +129,8 @@ class TransactionController:
             - 401: Unauthorized.
         """
         user_id = int(get_jwt_identity())
-        if user_id != Config.ADMIN_ID:
+        if user_id != int(Config.ADMIN_ID):
+            print(user_id, Config.ADMIN_ID)
             return jsonify({'message': 'Unauthorized'}), 401
         
         transaction = Transactions.query.get(transaction_id)
