@@ -207,7 +207,8 @@ class TransactionController:
                 'wallet_type': t.wallet_type,
                 'coin_type': t.coin_type,
                 'screenshot_url': t.screenshot_url,
-                'status': t.status
+                'status': t.status,
+                'created_at': t.created_at
             } for t in transactions]
             
             return jsonify(transactions_list), 200
