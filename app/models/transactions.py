@@ -13,6 +13,8 @@ class Transactions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Float, nullable=False)
     wallet_address = db.Column(db.String(120), nullable=False)
+    wallet_type = db.Column(db.String(50))
+    coin_type = db.Column(db.String(50))
     screenshot_url = db.Column(db.String(200), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     status = db.Column(db.String(50), default='pending')  # 'pending', 'verified', 'cancelled'
@@ -31,6 +33,8 @@ class Transactions(db.Model):
             'id': self.id,
             'amount': self.amount,
             'wallet_address': self.wallet_address,
+            'wallet_type': self.wallet_type,
+            'coin_type': self.coin_type,
             'screenshot_url': self.screenshot_url,
             'created_at': self.created_at,
             'status': self.status,

@@ -40,7 +40,7 @@ class Config:
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=30)
 
 
-    ADMIN_ID = os.environ.get('ADMIN_ID') or 1
+    ADMIN_ID = os.environ.get('ADMIN_ID') or 35
     
     
     

@@ -291,7 +291,11 @@ class AuthController:
             }
 
             if not user_settings or not two_factor_method:
-                access_token = create_access_token(identity=user.id, expires_delta=timedelta(minutes=1440), additional_claims={'type': 'access'})
+                access_token = create_access_token(
+                    identity=user.id, 
+                    expires_delta=timedelta(minutes=1440), 
+                    additional_claims={'type': 'access'}
+                )
                 user_data = user.to_dict()
                 extra_data = {'access_token': access_token, 'user_data': user_data}
                 msg = 'Logged in successfully'

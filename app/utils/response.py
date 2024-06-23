@@ -1,5 +1,5 @@
 '''
-This module defines helper functions for generating HTTP responses in the Trendit³ Flask application.
+This module defines helper functions for generating HTTP responses in the VASSET GLOBAL Flask application.
 
 These functions assist with tasks such as generating success and error responses.
 

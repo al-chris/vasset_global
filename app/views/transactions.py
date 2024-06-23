@@ -63,6 +63,8 @@ class TransactionController:
         user_id = get_jwt_identity()
         amount = int(data.get('amount'))
         wallet_address = data.get('wallet_address')
+        wallet_type = data.get('wallet_type')
+        coin_type = data.get('coin_type')
         
         user = User.query.get(user_id)
         if not user:
@@ -72,7 +74,9 @@ class TransactionController:
             transaction = Transactions(
                 amount=amount,
                 wallet_address=wallet_address,
-                user_id=user_id
+                user_id=user_id,
+                wallet_type=wallet_type,
+                coin_type=coin_type
             )
             db.session.add(transaction)
             db.session.commit()
